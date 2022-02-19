@@ -42,10 +42,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtSøg = new System.Windows.Forms.TextBox();
             this.tpResultsPage = new System.Windows.Forms.TabPage();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cbSearchType1 = new System.Windows.Forms.ComboBox();
             this.dgMovieResults = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.btnSeach1 = new System.Windows.Forms.Button();
+            this.lbLogo = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
@@ -190,10 +190,10 @@
             // 
             // tpResultsPage
             // 
-            this.tpResultsPage.Controls.Add(this.comboBox2);
+            this.tpResultsPage.Controls.Add(this.cbSearchType1);
             this.tpResultsPage.Controls.Add(this.dgMovieResults);
-            this.tpResultsPage.Controls.Add(this.button1);
-            this.tpResultsPage.Controls.Add(this.label2);
+            this.tpResultsPage.Controls.Add(this.btnSeach1);
+            this.tpResultsPage.Controls.Add(this.lbLogo);
             this.tpResultsPage.Controls.Add(this.textBox1);
             this.tpResultsPage.Location = new System.Drawing.Point(4, 22);
             this.tpResultsPage.Name = "tpResultsPage";
@@ -203,19 +203,19 @@
             this.tpResultsPage.Text = "Results";
             this.tpResultsPage.UseVisualStyleBackColor = true;
             // 
-            // comboBox2
+            // cbSearchType1
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.cbSearchType1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSearchType1.FormattingEnabled = true;
+            this.cbSearchType1.Items.AddRange(new object[] {
             "Movies",
             "Actors",
             "Genres"});
-            this.comboBox2.Location = new System.Drawing.Point(163, 23);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(59, 21);
-            this.comboBox2.TabIndex = 24;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.cbSearchType_SelectedIndexChanged);
+            this.cbSearchType1.Location = new System.Drawing.Point(163, 22);
+            this.cbSearchType1.Name = "cbSearchType1";
+            this.cbSearchType1.Size = new System.Drawing.Size(62, 21);
+            this.cbSearchType1.TabIndex = 24;
+            this.cbSearchType1.SelectedIndexChanged += new System.EventHandler(this.cbSearchType_SelectedIndexChanged);
             // 
             // dgMovieResults
             // 
@@ -225,30 +225,30 @@
             this.dgMovieResults.Size = new System.Drawing.Size(678, 311);
             this.dgMovieResults.TabIndex = 23;
             // 
-            // button1
+            // btnSeach1
             // 
-            this.button1.Location = new System.Drawing.Point(582, 24);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(61, 20);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "Search";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btnSeach1.Location = new System.Drawing.Point(578, 22);
+            this.btnSeach1.Name = "btnSeach1";
+            this.btnSeach1.Size = new System.Drawing.Size(61, 20);
+            this.btnSeach1.TabIndex = 20;
+            this.btnSeach1.Text = "Search";
+            this.btnSeach1.UseVisualStyleBackColor = true;
+            this.btnSeach1.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // label2
+            // lbLogo
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Comic Sans MS", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(3, 4);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(154, 45);
-            this.label2.TabIndex = 19;
-            this.label2.Text = "FDB.com";
-            this.label2.DoubleClick += new System.EventHandler(this.label2_DoubleClick);
+            this.lbLogo.AutoSize = true;
+            this.lbLogo.Font = new System.Drawing.Font("Comic Sans MS", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbLogo.Location = new System.Drawing.Point(3, 4);
+            this.lbLogo.Name = "lbLogo";
+            this.lbLogo.Size = new System.Drawing.Size(154, 45);
+            this.lbLogo.TabIndex = 19;
+            this.lbLogo.Text = "FDB.com";
+            this.lbLogo.DoubleClick += new System.EventHandler(this.label2_DoubleClick);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(218, 24);
+            this.textBox1.Location = new System.Drawing.Point(231, 22);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(341, 20);
             this.textBox1.TabIndex = 18;
@@ -366,8 +366,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtSøg;
         private System.Windows.Forms.TabPage tpResultsPage;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnSeach1;
+        private System.Windows.Forms.Label lbLogo;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.DataGridView dgMovieResults;
         private System.Windows.Forms.TabPage tabPage1;
@@ -375,7 +375,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblResume;
         private System.Windows.Forms.Label lblScore;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cbSearchType1;
         private System.Windows.Forms.ComboBox cbSearchType;
         private System.Windows.Forms.ListView lvActors;
         private System.Windows.Forms.Label label3;

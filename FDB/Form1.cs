@@ -8,7 +8,6 @@ namespace FDB
 {
     public partial class Form1 : Form
     {
-        private String password = "Nta87pxm10";
         private SearchType currentSearchType = SearchType.Movies;
         private Scene currentScene = Scene.frontPage;
 
@@ -129,7 +128,7 @@ namespace FDB
                 case Scene.resultPage:
                     //txtSøg.Clear();
                     //tbMoviePage.SelectTab(1);
-                    comboBox2.SelectedIndex = cbSearchType.SelectedIndex;
+                    cbSearchType1.SelectedIndex = cbSearchType.SelectedIndex;
                     SceneControl.SelectTab(1);
                     break;
 
@@ -221,7 +220,7 @@ namespace FDB
 
         private void cbSearchType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedIndex = (currentScene == Scene.frontPage) ? cbSearchType.SelectedIndex : comboBox2.SelectedIndex;
+            int selectedIndex = (currentScene == Scene.frontPage) ? cbSearchType.SelectedIndex : cbSearchType1.SelectedIndex;
 
             switch (selectedIndex)
             {
@@ -235,8 +234,6 @@ namespace FDB
                     currentSearchType = SearchType.Genres;
                     break;
             }
-
-            MessageBox.Show(currentSearchType.ToString());
         }
 
         private void lvActors_SelectedIndexChanged(object sender, EventArgs e)

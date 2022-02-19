@@ -28,47 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbSelectedActors = new System.Windows.Forms.ListBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.txtActSearch = new System.Windows.Forms.TextBox();
             this.lbSearchedActors = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtRole = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.lbRole = new System.Windows.Forms.ListBox();
+            this.btnAssignActor = new System.Windows.Forms.Button();
+            this.btnRemoveActor = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lbSelectedActors
-            // 
-            this.lbSelectedActors.FormattingEnabled = true;
-            this.lbSelectedActors.Location = new System.Drawing.Point(337, 78);
-            this.lbSelectedActors.Name = "lbSelectedActors";
-            this.lbSelectedActors.Size = new System.Drawing.Size(139, 212);
-            this.lbSelectedActors.TabIndex = 9;
-            this.lbSelectedActors.DoubleClick += new System.EventHandler(this.lbSelectedActors_DoubleClick);
-            // 
-            // button3
-            // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(215, 138);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(29, 33);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "<";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(286, 138);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(29, 33);
-            this.button2.TabIndex = 7;
-            this.button2.Text = ">";
-            this.button2.UseVisualStyleBackColor = true;
             // 
             // txtActSearch
             // 
@@ -85,7 +54,6 @@
             this.lbSearchedActors.Name = "lbSearchedActors";
             this.lbSearchedActors.Size = new System.Drawing.Size(139, 212);
             this.lbSearchedActors.TabIndex = 4;
-            this.lbSearchedActors.DoubleClick += new System.EventHandler(this.lbSearchedActors_DoubleClick);
             // 
             // label1
             // 
@@ -115,32 +83,40 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(130, 208);
+            this.dataGridView1.Location = new System.Drawing.Point(332, 78);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(217, 212);
+            this.dataGridView1.Size = new System.Drawing.Size(244, 212);
             this.dataGridView1.TabIndex = 19;
             // 
-            // lbRole
+            // btnAssignActor
             // 
-            this.lbRole.FormattingEnabled = true;
-            this.lbRole.Location = new System.Drawing.Point(482, 78);
-            this.lbRole.Name = "lbRole";
-            this.lbRole.Size = new System.Drawing.Size(99, 212);
-            this.lbRole.TabIndex = 20;
+            this.btnAssignActor.Location = new System.Drawing.Point(229, 138);
+            this.btnAssignActor.Name = "btnAssignActor";
+            this.btnAssignActor.Size = new System.Drawing.Size(62, 20);
+            this.btnAssignActor.TabIndex = 21;
+            this.btnAssignActor.Text = "Assign";
+            this.btnAssignActor.UseVisualStyleBackColor = true;
+            // 
+            // btnRemoveActor
+            // 
+            this.btnRemoveActor.Location = new System.Drawing.Point(229, 173);
+            this.btnRemoveActor.Name = "btnRemoveActor";
+            this.btnRemoveActor.Size = new System.Drawing.Size(62, 20);
+            this.btnRemoveActor.TabIndex = 22;
+            this.btnRemoveActor.Text = "Remove";
+            this.btnRemoveActor.UseVisualStyleBackColor = true;
             // 
             // AssignActorToMovie
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(608, 351);
-            this.Controls.Add(this.lbRole);
+            this.Controls.Add(this.btnRemoveActor);
+            this.Controls.Add(this.btnAssignActor);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtRole);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.lbSelectedActors);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.txtActSearch);
             this.Controls.Add(this.lbSearchedActors);
             this.Name = "AssignActorToMovie";
@@ -153,15 +129,13 @@
         }
 
         #endregion
-        private System.Windows.Forms.ListBox lbSelectedActors;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox txtActSearch;
         private System.Windows.Forms.ListBox lbSearchedActors;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtRole;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.ListBox lbRole;
+        private System.Windows.Forms.Button btnAssignActor;
+        private System.Windows.Forms.Button btnRemoveActor;
     }
 }
