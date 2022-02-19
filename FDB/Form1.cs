@@ -10,6 +10,7 @@ namespace FDB
     {
         private String password = "Nta87pxm10";
         private SearchType currentSearchType = SearchType.Movies;
+        private Scene currentScene = Scene.frontPage;
 
         private enum Scene
         {
@@ -54,7 +55,6 @@ namespace FDB
             cbSearchType.SelectedItem = cbSearchType.Items[0];
             currentSearchType = SearchType.Movies;
 
-
         }
 
 
@@ -74,36 +74,28 @@ namespace FDB
             addActor.Show();
         }
 
+        // TODO: add checks
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            //string searchQuery = (txtSøg.Text != string.Empty) ? txtSøg.Text : textBox1.Text;
-
-            /*if (txtSøg.Text != string.Empty)
-            {
-                DataTable movies = Database.GetMoviesFromSearchString(txtSøg.Text);
-                dgMovieResults.DataSource = movies;
-            }
-            else if (textBox1.Text != string.Empty)
-            {
-                DataTable movies = Database.GetMoviesFromSearchString(textBox1.Text);
-                dgMovieResults.DataSource = movies;
-            }*/
+            string searchQuery = (currentScene == Scene.frontPage) ? txtSøg.Text : textBox1.Text;
 
             switch(currentSearchType)
             {
                 case SearchType.Movies:
-                    dgMovieResults.DataSource = Database.GetAllFromTable("movie");
+                    dgMovieResults.DataSource = Database.GetMoviesFromQuery(searchQuery);
                     break;
                 case SearchType.Actors:
-                    dgMovieResults.DataSource = Database.GetAllFromTable("actor");
+                    dgMovieResults.DataSource = Database.GetActorsFromQuery(searchQuery);
                     break;
                 case SearchType.Genres:
-                    dgMovieResults.DataSource = Database.GetAllFromTable("genre");
+                    dgMovieResults.DataSource = Database.GetGenresFromQuery(searchQuery);
                     break;
             }
 
-
-            TransitionTo(Scene.resultPage);
+            if (currentScene!= Scene.resultPage)
+            {
+                TransitionTo(Scene.resultPage);
+            }
         }
 
         private void genreToolStripMenuItem_Click(object sender, EventArgs e)
@@ -151,6 +143,7 @@ namespace FDB
                 default:
                     break;
             }
+            currentScene = newScene;
         }
 
 
@@ -228,7 +221,7 @@ namespace FDB
 
         private void cbSearchType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedIndex = (SceneControl.SelectedIndex == 0) ? cbSearchType.SelectedIndex : comboBox2.SelectedIndex;
+            int selectedIndex = (currentScene == Scene.frontPage) ? cbSearchType.SelectedIndex : comboBox2.SelectedIndex;
 
             switch (selectedIndex)
             {
