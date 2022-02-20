@@ -9,6 +9,7 @@ namespace FDB
     public partial class addMovie : Form
     {
         private int mov_id;
+        string img_path = string.Empty;
 
         public addMovie()
         {
@@ -22,7 +23,6 @@ namespace FDB
             int year = Int32.Parse(txtYear.Text);
             int play_time = Int32.Parse(txtPlay_time.Text);
             string resume = txtResume.Text;
-            string img_path = openFileDialog1.FileName;
 
             this.mov_id = Database.InsertMovieToDatabase(title, year, play_time, resume, img_path);
         }
@@ -46,11 +46,15 @@ namespace FDB
         {
 
             openFileDialog1.Title = "Select an image";
+
+            // Ensures that the search field is empty when dialog is opened
+            openFileDialog1.FileName = String.Empty;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                String filePath = openFileDialog1.FileName;
+                img_path = openFileDialog1.FileName;
+                MessageBox.Show(img_path);
                 pbPreview.SizeMode = PictureBoxSizeMode.StretchImage;
-                pbPreview.Load(filePath);
+                pbPreview.Load(img_path);
                 pbPreview.Show();
             }
         }

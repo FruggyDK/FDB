@@ -21,7 +21,7 @@ namespace FDB
 
         // TODO: add try-catchs to all functions to ensure visibility and stability of program
 
-
+        // TODO: try to add parameters
         /// <summary>Gets the movies from search string.</summary>
         /// <param name="table">The table.</param>
         /// <param name="queryColumn">The query column.</param>
@@ -104,17 +104,16 @@ namespace FDB
             }
             else if (query == String.Empty)
             {
-                cmd.CommandText = "select * from " + table + ";";
+                cmd.CommandText = "select * from " + tables[(int)table] + ";";
             }
 
+            DataTable dt = new DataTable();
             try
             {
                 NpgsqlDataReader dr = cmd.ExecuteReader();
                 if (dr.HasRows)
                 {
-                    DataTable dt = new DataTable();
                     dt.Load(dr);
-                    return dt;
                 }
             }
             catch (Exception E)
@@ -125,7 +124,7 @@ namespace FDB
 
             cmd.Dispose();
             connection.Close();
-            return new DataTable();
+            return dt;
         }
 
         public static DataTable GetMoviesFromQuery(string query)
@@ -157,27 +156,35 @@ namespace FDB
         {
             NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             connection.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandType = CommandType.Text;
-            //TODO: consider changing the following expression to a postgresql function, to simplify call
-            cmd.CommandText =
-                "select movie_cast.act_id, concat(trim(actor.act_fname), ' ', trim(actor.act_lname)) as Actor, movie_cast.role from movie_cast JOIN actor on movie_cast.act_id = actor.act_id and movie_cast.mov_id = "
-                + mov_id
-                + ";";
-
-            NpgsqlDataReader dr = cmd.ExecuteReader();
-            if (dr.HasRows)
+            NpgsqlCommand cmd = new NpgsqlCommand
             {
-                DataTable dt = new DataTable();
-                dt.Load(dr);
-                return dt;
+                Connection = connection,
+                CommandType = CommandType.Text,
+                //TODO: consider changing the following expression to a postgresql function, to simplify call
+                CommandText =
+                    "select movie_cast.act_id, concat(trim(actor.act_fname), ' ', trim(actor.act_lname)) as Actor, movie_cast.role from movie_cast JOIN actor on movie_cast.act_id = actor.act_id and movie_cast.mov_id = "
+                    + mov_id
+                    + ";"
+            };
+
+            DataTable dt = new DataTable();
+            try
+            {
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    dt.Load(dr);
+                }
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                MessageBox.Show(cmd.CommandText);
             }
 
             cmd.Dispose();
             connection.Close();
-
-            return new DataTable();
+            return dt;
         }
 
         /// <summary>Gets all from table.</summary>
@@ -189,22 +196,31 @@ namespace FDB
         {
             NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             connection.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select * from " + tables[(int)table] + ";";
-
-            NpgsqlDataReader dr = cmd.ExecuteReader();
-            if (dr.HasRows)
+            NpgsqlCommand cmd = new NpgsqlCommand
             {
-                DataTable dt = new DataTable();
-                dt.Load(dr);
-                return dt;
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "select * from $1;"
+            };
+            cmd.Parameters.AddWithValue(tables[(int)table]);
+            DataTable dt = new DataTable();
+            try
+            {
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    dt.Load(dr);
+                }
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                MessageBox.Show(cmd.CommandText);
             }
 
             cmd.Dispose();
             connection.Close();
-            return new DataTable();
+            return dt;
         }
 
         public static int InsertMovieToDatabase(
@@ -228,7 +244,14 @@ namespace FDB
             cmd.Parameters.AddWithValue("@2", year);
             cmd.Parameters.AddWithValue("@3", play_time);
             cmd.Parameters.AddWithValue("@4", resume);
-            cmd.Parameters.AddWithValue("@5", img_path);
+            if (img_path != string.Empty)
+            {
+                cmd.Parameters.AddWithValue("@5", img_path);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@5", DBNull.Value);
+            }
             cmd.Parameters.Add(
                 new NpgsqlParameter("mov_id", DbType.Int32)
                 {
@@ -236,21 +259,21 @@ namespace FDB
                 }
             );
 
+            int mov_id = -1;
             try
             {
                 cmd.ExecuteNonQuery();
-                int mov_id = (int)cmd.Parameters[cmd.Parameters.Count - 1].Value;
+                mov_id = (int)cmd.Parameters[cmd.Parameters.Count - 1].Value;
                 MessageBox.Show("Succesfully added movie with id: " + mov_id.ToString());
-                cmd.Dispose();
-                connection.Close();
-                return mov_id;
             }
             catch (NpgsqlException E)
             {
                 MessageBox.Show(E.Message);
             }
 
-            return -1;
+            cmd.Dispose();
+            connection.Close();
+            return mov_id;
         }
 
         public static bool InsertActorToMovie(int mov_id, int act_id, string role)
@@ -359,9 +382,100 @@ namespace FDB
             connection.Close();
             return true;
         }
+
+        // TODO: add parameters
+        public static bool AddGenreToMovie(int mov_id, int gen_id)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "insert into movie_genres (mov_id, gen_id) values($1, $2);"
+            };
+            cmd.Parameters.AddWithValue(mov_id);
+            cmd.Parameters.AddWithValue(gen_id);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show(cmd.CommandText);
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return true;
+        }
+
+        public static DataTable GetGenresFromMovie(int mov_id)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText =
+                    "select movie_genres.gen_id, genre.gen_title from movie_genres join genre on movie_genres.gen_id = genre.gen_id and movie_genres.mov_id=$1;"
+            };
+            cmd.Parameters.AddWithValue(mov_id);
+
+            DataTable dt = new DataTable();
+            try
+            {
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    dt.Load(dr);
+                }
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                MessageBox.Show(cmd.CommandText);
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return dt;
+        }
+
+        public static bool RemoveGenreFromMovie(int mov_id, int gen_id)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText =
+                    "delete from movie_genres where gen_id = "
+                    + gen_id
+                    + "and mov_id="
+                    + mov_id
+                    + ";"
+            };
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show(cmd.CommandText);
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return true;
+        }
     }
-
-    // TODO: move all the database calls to this class and use these methods from within the other files
-
-
 }
+
+// TODO: move all the database calls to this class and use these methods from within the other files

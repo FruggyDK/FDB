@@ -40,9 +40,7 @@ namespace FDB
             {
                 lbSearchedActors.Items.Add(searchedActors.Rows[i]["Actor"].ToString());
             }
-
         }
-
 
         private void UpdateDataGrid()
         {
@@ -58,7 +56,6 @@ namespace FDB
                 dataGridView1.DataSource = dt;
             }
             dataGridView1.ClearSelection();
-
         }
 
         private void btnAssignActor_Click(object sender, EventArgs e)
@@ -68,7 +65,11 @@ namespace FDB
 
             if (index != -1)
             {
-                bool result = Database.InsertActorToMovie(mov_id, (int)searchedActors.Rows[index]["act_id"], role);
+                bool result = Database.InsertActorToMovie(
+                    mov_id,
+                    (int)searchedActors.Rows[index]["act_id"],
+                    role
+                );
                 if (result)
                 {
                     UpdateDataGrid();
@@ -109,10 +110,9 @@ namespace FDB
                 txtRole.Text = selectedActors.Rows[selectedRowIndex]["role"].ToString();
                 btnRemoveActor.Show();
                 btnUpdateActor.Location = btnAssignActor.Location;
-                btnUpdateActor.Show();  // TODO: fix
+                btnUpdateActor.Show(); // TODO: fix
                 btnAssignActor.Hide();
             }
-
         }
 
         private void btnUpdateActor_Click(object sender, EventArgs e)
@@ -129,7 +129,5 @@ namespace FDB
         {
             txtRole.Clear();
         }
-
-
     }
 }

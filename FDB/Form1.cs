@@ -30,7 +30,6 @@ namespace FDB
         {
             InitializeComponent();
             LoadActorsFromMovie(47);
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -48,11 +47,9 @@ namespace FDB
             txtSøg.Focus();
             Database.GetActorsFromMovie(47);
 
-
             //TODO: fix xD
             cbSearchType.SelectedItem = cbSearchType.Items[0];
             currentSearchType = SearchType.Movies;
-
         }
 
         //TODO: fix spawning position of child forms after moving parent form
@@ -75,7 +72,7 @@ namespace FDB
         {
             string searchQuery = (currentScene == Scene.frontPage) ? txtSøg.Text : textBox1.Text;
 
-            switch(currentSearchType)
+            switch (currentSearchType)
             {
                 case SearchType.Movies:
                     dgMovieResults.DataSource = Database.GetMoviesFromQuery(searchQuery);
@@ -88,7 +85,7 @@ namespace FDB
                     break;
             }
 
-            if (currentScene!= Scene.resultPage)
+            if (currentScene != Scene.resultPage)
             {
                 TransitionTo(Scene.resultPage);
             }
@@ -142,7 +139,6 @@ namespace FDB
             currentScene = newScene;
         }
 
-
         //TODO: add dynamic movie loading from DB
         private void tbMoviePage_Selected(object sender, TabControlEventArgs e)
         {
@@ -156,12 +152,12 @@ namespace FDB
         private DataTable LoadActorsFromMovie(int mov_id)
         {
             NpgsqlConnection connection = new NpgsqlConnection(
-                           "Server=localhost;" +
-                           "Port=5432;" +
-                           "Database=FDB;" +
-                           "User Id=postgres;" +
-                           "Password=Nta87pxm10;"
-                           );
+                "Server=localhost;"
+                    + "Port=5432;"
+                    + "Database=FDB;"
+                    + "User Id=postgres;"
+                    + "Password=Nta87pxm10;"
+            );
             connection.Open();
             NpgsqlCommand cmd = new NpgsqlCommand();
             cmd.Connection = connection;
@@ -217,7 +213,10 @@ namespace FDB
 
         private void cbSearchType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedIndex = (currentScene == Scene.frontPage) ? cbSearchType.SelectedIndex : cbSearchType1.SelectedIndex;
+            int selectedIndex =
+                (currentScene == Scene.frontPage)
+                    ? cbSearchType.SelectedIndex
+                    : cbSearchType1.SelectedIndex;
 
             switch (selectedIndex)
             {

@@ -10,6 +10,7 @@ namespace FDB
         private DataTable searchedGenres = new DataTable();
         private DataTable selectedGenres = new DataTable();
         private int mov_id;
+        int selectedGenId;
 
         public AssignGenreToMovie(int mov_id)
         {
@@ -17,85 +18,83 @@ namespace FDB
             this.mov_id = mov_id;
         }
 
-        private void txtGenSearch_TextChanged(object sender, EventArgs e)
+        private void AssignGenreToMovie_Load(object sender, EventArgs e)
         {
-            NpgsqlConnection connection = new NpgsqlConnection(
-                "Server=localhost;" +
-                "Port=5432;" +
-                "Database=FDB;" +
-                "User Id=postgres;" +
-                "Password=Nta87pxm10;");
-            searchedGenres.Clear();
-            lbSearchedGenres.Items.Clear();
-            connection.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select genre.gen_id, genre.gen_title as Genre from genre where genre.gen_title ilike '%" + txtGenSearch.Text + "%';";
-            if (txtGenSearch.Text != "")
-            {
-                NpgsqlDataReader dr = cmd.ExecuteReader();
-                if (dr.HasRows)
-                {
-                    searchedGenres.Load(dr);
-                    for (int i = 0; i < searchedGenres.Rows.Count; i++)
-                    {
-                        lbSearchedGenres.Items.Add(searchedGenres.Rows[i]["Genre"].ToString());
-                    }
-                }
-            }
-
-            cmd.Dispose();
-            connection.Close();
+            btnAssignGenre.Hide();
+            btnRemoveGenre.Location = btnAssignGenre.Location;
+            btnRemoveGenre.Hide();
+            lbSelectedGenres_Update();
         }
 
-        private void lbSearchedGenres_DoubleClick(object sender, EventArgs e)
+        private void txtGenSearch_TextChanged(object sender, EventArgs e)
+        {
+            lbSearchedGenres.Items.Clear();
+            searchedGenres = Database.GetGenresFromQuery(txtGenSearch.Text);
+
+            for (int i = 0; i < searchedGenres.Rows.Count; i++)
+            {
+                lbSearchedGenres.Items.Add(searchedGenres.Rows[i]["gen_title"].ToString());
+            }
+        }
+
+        private void btnAssignGenre_Click(object sender, EventArgs e)
         {
             int index = lbSearchedGenres.SelectedIndex;
 
             if (index != -1)
             {
-                if (selectedGenres.Columns.Count != 2)
-                {
-                    selectedGenres = searchedGenres.Copy();
-                    selectedGenres.Rows.Clear();
-                }
-                selectedGenres.ImportRow(searchedGenres.Rows[index]);
-                bool result = AddGenreToMovie(this.mov_id, (int)selectedGenres.Rows[selectedGenres.Rows.Count - 1]["gen_id"]);
+                bool result = Database.AddGenreToMovie(
+                    this.mov_id,
+                    (int)searchedGenres.Rows[index]["gen_id"]
+                );
                 if (result)
                 {
-                    lbSelectedGenres.Items.Add(lbSearchedGenres.SelectedItem);
+                    lbSelectedGenres_Update();
                 }
             }
         }
 
-        private bool AddGenreToMovie(int mov_id, int gen_id)
+        private void btnRemoveGenre_Click(object sender, EventArgs e) 
         {
-            NpgsqlConnection connection = new NpgsqlConnection(
-                "Server=localhost;" +
-                "Port=5432;" +
-                "Database=FDB;" +
-                "User Id=postgres;" +
-                "Password=Nta87pxm10;");
-            connection.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "insert into movie_genres (mov_id, gen_id) values(" + mov_id + ", " + gen_id + ");";
-            try
+            bool result = Database.RemoveGenreFromMovie(mov_id, selectedGenId);
+            if (result)
             {
-                cmd.ExecuteNonQuery();
-                MessageBox.Show(cmd.CommandText);
+                lbSelectedGenres_Update();
             }
-            catch (Exception E)
-            {
-                MessageBox.Show(E.Message);
-                return false;
-            }
+        }
 
-            cmd.Dispose();
-            connection.Close();
-            return true;
+        private void lbSelectedGenres_Update()
+        {
+            // Ensure the grid is empty when there are no assigned actors
+            lbSelectedGenres.Items.Clear();
+
+            selectedGenres = Database.GetGenresFromMovie(mov_id);
+            if (selectedGenres.Rows.Count > 0)
+            {
+                for (int i = 0; i < selectedGenres.Rows.Count; i++)
+                {
+                    lbSelectedGenres.Items.Add(selectedGenres.Rows[i]["gen_title"]);
+                }
+            }
+            lbSelectedGenres.ClearSelected();
+        }
+
+        private void lbSearchedGenres_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnAssignGenre.Show();
+            btnRemoveGenre.Hide();
+        }
+
+        private void lbSelectedGenres_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lbSearchedGenres.ClearSelected();
+            int index = lbSelectedGenres.SelectedIndex;
+            if (index != -1)
+            {
+                selectedGenId = (int)selectedGenres.Rows[index]["gen_id"];
+                btnRemoveGenre.Show();
+                btnAssignGenre.Hide();
+            }
         }
     }
 }
