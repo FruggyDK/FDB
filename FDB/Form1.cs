@@ -44,7 +44,6 @@ namespace FDB
                 tab.Text = string.Empty;
             }
 
-
             menuStrip1.BringToFront();
             txtSøg.Focus();
             Database.GetActorsFromMovie(47);
@@ -55,8 +54,6 @@ namespace FDB
             currentSearchType = SearchType.Movies;
 
         }
-
-
 
         //TODO: fix spawning position of child forms after moving parent form
         private void movieToolStripMenuItem_Click(object sender, EventArgs e)
@@ -122,13 +119,13 @@ namespace FDB
             switch (newScene)
             {
                 case Scene.frontPage:
+                    txtSøg.Clear();
                     SceneControl.SelectTab(0);
                     break;
 
                 case Scene.resultPage:
-                    //txtSøg.Clear();
-                    //tbMoviePage.SelectTab(1);
                     cbSearchType1.SelectedIndex = cbSearchType.SelectedIndex;
+                    textBox1.Text = txtSøg.Text;
                     SceneControl.SelectTab(1);
                     break;
 

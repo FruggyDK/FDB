@@ -1,20 +1,18 @@
-﻿using Npgsql;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
 
 namespace FDB
 {
-    //TODO: consider making a class for the handling the database, and adding methods there for adding
-    // each type of data. Which return type of enum Result; Result.OK, Result.Error
-    //TODO: RETHINK DESIGN OG THIS PAGE
     public partial class AssignActorToMovie : Form
     {
-        //TODO: check if there already exists actors in movie; if so display them in listBox2
-
         private int mov_id;
         private DataTable searchedActors = new DataTable();
         private DataTable selectedActors = new DataTable();
+        private int selectedRowIndex;
+        private int selectedActId;
+
+        // TODO: add checker for role changing before showing update button
 
         public AssignActorToMovie(int mov_id)
         {
@@ -24,60 +22,112 @@ namespace FDB
 
         private void AssignActorToMovie_Load(object sender, EventArgs e)
         {
-            label1.Text = "Adding actors to movie with id: " + this.mov_id.ToString();
-            selectedActors = Database.GetActorsFromMovie(this.mov_id); 
-            updateDataGrid();
+            label1.Text = "Adding actors to movie with id: " + mov_id.ToString();
+            selectedActors = Database.GetActorsFromMovie(mov_id);
+            btnRemoveActor.Hide();
+            btnAssignActor.Hide();
+            btnUpdateActor.Hide();
+            UpdateDataGrid();
         }
 
         private void txtActSearch_TextChanged(object sender, EventArgs e)
         {
-            searchedActors.Rows.Clear();
+            lbSearchedActors.Items.Clear();
+
             searchedActors = Database.GetActorsFromQuery(txtActSearch.Text);
 
             for (int i = 0; i < searchedActors.Rows.Count; i++)
             {
                 lbSearchedActors.Items.Add(searchedActors.Rows[i]["Actor"].ToString());
             }
+
         }
 
-        //TODO: consider using datagrids instead of listboxs
 
-        /*private void lbSearchedActors_DoubleClick(object sender, EventArgs e)
+        private void UpdateDataGrid()
+        {
+            // Ensure the grid is empty when there are no assigned actors
+            dataGridView1.DataSource = null;
+
+            selectedActors = Database.GetActorsFromMovie(mov_id);
+            DataTable dt = selectedActors.Copy();
+            if (selectedActors.Columns.Count != 0)
+            {
+                // removes the act_id column from the datatable
+                dt.Columns.RemoveAt(0);
+                dataGridView1.DataSource = dt;
+            }
+            dataGridView1.ClearSelection();
+
+        }
+
+        private void btnAssignActor_Click(object sender, EventArgs e)
         {
             int index = lbSearchedActors.SelectedIndex;
             string role = txtRole.Text.Trim();
 
             if (index != -1)
             {
-                if (selectedActors.Columns.Count != 2)
-                {
-                    selectedActors = searchedActors.Copy();
-                    selectedActors.Rows.Clear();
-                }
-                selectedActors.ImportRow(searchedActors.Rows[index]);
-                bool result = InsertActorToMovie(this.mov_id, (int)selectedActors.Rows[selectedActors.Rows.Count - 1]["act_id"], role);
+                bool result = Database.InsertActorToMovie(mov_id, (int)searchedActors.Rows[index]["act_id"], role);
                 if (result)
                 {
-                    lbSelectedActors.Items.Add(lbSearchedActors.SelectedItem);
+                    UpdateDataGrid();
+                    txtRole.Clear();
+                    btnAssignActor.Hide();
                 }
             }
-        }*/
+        }
 
-
-        /*private void lbSelectedActors_DoubleClick(object sender, EventArgs e)
+        private void btnRemoveActor_Click(object sender, EventArgs e)
         {
-            int index = lbSelectedActors.SelectedIndex;
-
-            if (index != -1)
+            bool result = Database.RemoveActorFromMovie(mov_id, selectedActId);
+            if (result)
             {
-                MessageBox.Show(this.selectedActors.Rows[index]["Actor"].ToString());
-                RemoveActorFromMovie(this.mov_id, (int)this.selectedActors.Rows[index]["act_id"]);
+                txtRole.Clear();
+                UpdateDataGrid();
             }
-        }*/
+        }
 
-        private void updateDataGrid()
+        // TODO: fix dobbel blue higlight flash in datagridview1
+        private void lbSearchedActors_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = Database.GetActorsFromMovie(mov_id);
+            txtRole.Clear();
+            dataGridView1.ClearSelection();
+            btnAssignActor.Show();
+            btnRemoveActor.Hide();
+            btnUpdateActor.Hide();
+        }
+
+        // TODO: fix delete when there is only one selected actor
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            lbSearchedActors.ClearSelected();
+            selectedRowIndex = e.RowIndex;
+            if (selectedRowIndex != -1)
+            {
+                selectedActId = (int)selectedActors.Rows[selectedRowIndex]["act_id"];
+                txtRole.Text = selectedActors.Rows[selectedRowIndex]["role"].ToString();
+                btnRemoveActor.Show();
+                btnUpdateActor.Location = btnAssignActor.Location;
+                btnUpdateActor.Show();  // TODO: fix
+                btnAssignActor.Hide();
+            }
+
+        }
+
+        private void btnUpdateActor_Click(object sender, EventArgs e)
+        {
+            bool result = Database.UpdateActorsRole(mov_id, selectedActId, txtRole.Text);
+            if (result)
+            {
+                txtRole.Clear();
+                UpdateDataGrid();
+            }
+        }
+
+        private void txtActSearch_Click(object sender, EventArgs e)
+        {
+            txtRole.Clear();
         }
 
 
