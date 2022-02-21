@@ -200,9 +200,38 @@ namespace FDB
             {
                 Connection = connection,
                 CommandType = CommandType.Text,
-                CommandText = "select * from $1;"
+                CommandText = "select * from " + tables[(int)table] + ";"
             };
-            cmd.Parameters.AddWithValue(tables[(int)table]);
+            DataTable dt = new DataTable();
+            try
+            {
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    dt.Load(dr);
+                }
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                MessageBox.Show(cmd.CommandText);
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return dt;
+        }
+
+        public static DataTable GetCertainRowsFromTable(Table table, string rows)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "select " + rows + " from " + tables[(int)table] + ";"
+            };
             DataTable dt = new DataTable();
             try
             {
@@ -319,7 +348,7 @@ namespace FDB
         /// <returns>
         ///   <br />
         /// </returns>
-        public static bool RemoveActorFromMovie(int mov_id, int act_id)
+        public static bool DeleteActorFromMovie(int mov_id, int act_id)
         {
             NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             connection.Open();
@@ -445,7 +474,7 @@ namespace FDB
             return dt;
         }
 
-        public static bool RemoveGenreFromMovie(int mov_id, int gen_id)
+        public static bool DeleteGenreFromMovie(int mov_id, int gen_id)
         {
             NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             connection.Open();
@@ -474,6 +503,162 @@ namespace FDB
             cmd.Dispose();
             connection.Close();
             return true;
+        }
+
+        public static bool InsertGenreToDatabase(string gen_title)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "insert into genre(gen_title) values('" + gen_title + "');"
+            };
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (NpgsqlException E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return true;
+        }
+
+        public static bool UpdateGenreTitle(int gen_id, string newGenTitle)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "update genre set gen_title = $1 where gen_id = $2;"
+            };
+
+            cmd.Parameters.AddWithValue(newGenTitle);
+            cmd.Parameters.AddWithValue(gen_id);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show(cmd.CommandText);
+            }
+            catch (NpgsqlException E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return true;
+        }
+
+        public static bool DeleteGenreFromDatabase(int gen_id)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "delete from genre where gen_id = $1"
+            };
+            cmd.Parameters.AddWithValue(gen_id);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show(cmd.CommandText);
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return true;
+        }
+
+        public static bool InsertActorToDatabase(string act_fname, string act_lname, string img_path)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+
+            //TODO: add dob parameter
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "insert into actor(act_fname, act_lname, act_img_path) values(@1, @2, @3) returning act_id"
+            };
+            cmd.Parameters.AddWithValue("@1", act_fname);
+            cmd.Parameters.AddWithValue("@2", act_lname);
+            if (img_path != string.Empty)
+            {
+                cmd.Parameters.AddWithValue("@3", img_path);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@3", DBNull.Value);
+            }
+
+            cmd.Parameters.Add(new NpgsqlParameter("act_id", DbType.Int32) { Direction = ParameterDirection.Output });
+
+            // TODO: add constraint to name
+            try
+            {
+                cmd.ExecuteNonQuery();
+                // TODO: consider removing, or otherwise adding for all cases
+                int act_id = (int)cmd.Parameters[cmd.Parameters.Count - 1].Value;
+                MessageBox.Show("Succesfully added actor with id: " + act_id.ToString());
+            }
+            catch (NpgsqlException E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+            cmd.Dispose();
+            connection.Close();
+            return true;
+        }
+
+        public static DataTable GetActorsFromDatabase()
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "select act_id, concat(trim(act_fname), ' ', trim(act_lname)) as Actor from actor;"
+            };
+            DataTable dt = new DataTable();
+            try
+            {
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    dt.Load(dr);
+                }
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                MessageBox.Show(cmd.CommandText);
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return dt;
         }
     }
 }

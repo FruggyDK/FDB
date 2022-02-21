@@ -7,90 +7,102 @@ namespace FDB
 {
     public partial class addGenre : Form
     {
-        private String password = "Nta87pxm10";
-        private bool updateGenre = false;
-        private String selectedDbGenre = "";
+        private int selectedGenreId;
+        private DataTable genreList;
+        private bool selectedGenre = true;
 
         public addGenre()
         {
             InitializeComponent();
-            updateDataGrid();
+            UpdateDataGrid();
+        }
+
+        private void addGenre_Load(object sender, EventArgs e)
+        {
+            UpdateDataGrid();
+            btnGenreUpdate.Hide();
+            btnGenreUpdate.Location = btnAddGenre.Location;
+            btnGenreRemove.Hide();
         }
 
         private void btnAddGenre_Click(object sender, EventArgs e)
         {
             string gen_title = txtGenreTitle.Text.Trim();
 
-            if (txtGenreTitle.Text != "")
+            if (txtGenreTitle.Text != string.Empty)
             {
-                NpgsqlConnection connection = new NpgsqlConnection(
-                "Server=localhost;" +
-                "Port=5432;" +
-                "Database=FDB;" +
-                "User Id=postgres;" +
-                "Password=" + password + ";"
-                );
-                connection.Open();
-                NpgsqlCommand cmd = new NpgsqlCommand();
-                cmd.Connection = connection;
-                cmd.CommandType = CommandType.Text;
-                if (updateGenre)
+                bool result = Database.InsertGenreToDatabase(gen_title);
+                if (result)
                 {
-                    cmd.CommandText = "update genre set gen_title = '" + gen_title + "' where gen_title ='" + selectedDbGenre + "';";
+                    txtGenreTitle.Clear();
+                    UpdateDataGrid();
                 }
-                else
-                {
-                    cmd.CommandText = "insert into genre(gen_title) values('" + gen_title + "');";
-                }
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                }
-                catch (NpgsqlException E)
-                {
-                    MessageBox.Show(E.Message);
-                }
-                cmd.Dispose();
-                connection.Close();
-                updateDataGrid();
-                updateGenre = false;
-                btnAddGenre.Text = "Add";
+            }
+        }
+
+        private void UpdateDataGrid()
+        {
+            genreList = Database.GetAllEntititesFromTable(Database.Table.Genre);
+
+            DataTable dt = genreList.Copy();
+            dt.Columns.RemoveAt(0);
+            dataGridView1.DataSource = dt;
+            dataGridView1.ClearSelection();
+        }
+
+        private void btnGenreUpdate_Click(object sender, EventArgs e)
+        {
+            string gen_title = txtGenreTitle.Text.Trim();
+
+            if (gen_title != string.Empty)
+            {
+                bool result = Database.UpdateGenreTitle(selectedGenreId, gen_title);
+                UpdateDataGrid();
                 txtGenreTitle.Clear();
+                ShowBtnAddGenre();
             }
         }
 
-        private void updateDataGrid()
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            NpgsqlConnection connection = new NpgsqlConnection(
-               "Server=localhost;" +
-               "Port=5432;" +
-               "Database=FDB;" +
-               "User Id=postgres;" +
-               "Password=" + password + ";"
-               );
-            connection.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = "select genre.gen_title as Genre from genre;";
-            NpgsqlDataReader dr = cmd.ExecuteReader();
-            if (dr.HasRows)
+            int index = e.RowIndex;
+            if (index != -1)
             {
-                DataTable dt = new DataTable();
-                dt.Load(dr);
-                dataGridView1.DataSource = dt;
+                selectedGenreId = (int)genreList.Rows[index]["gen_id"];
+                txtGenreTitle.Text = genreList.Rows[index]["gen_title"].ToString();
+                btnGenreRemove.Show();
+                btnGenreUpdate.Show();
             }
-            cmd.Dispose();
-            connection.Close();
         }
 
-        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void btnGenreRemove_Click(object sender, EventArgs e)
         {
-            String selectedGenre = dataGridView1[e.ColumnIndex, e.RowIndex].Value.ToString();
-            txtGenreTitle.Text = selectedGenre;
-            selectedDbGenre = selectedGenre;
-            updateGenre = true;
-            btnAddGenre.Text = "Update";
+            bool result = Database.DeleteGenreFromDatabase(selectedGenreId);
+            if (result)
+            {
+                UpdateDataGrid();
+                txtGenreTitle.Clear();
+                ShowBtnAddGenre();
+            }
+        }
+
+        private void txtGenreTitle_Click(object sender, EventArgs e)
+        {
+            if (selectedGenre == false)
+            {
+                btnAddGenre.Show();
+                btnGenreRemove.Hide();
+                btnGenreUpdate.Hide();
+            }
+
+            selectedGenre = true;
+        }
+
+        private void ShowBtnAddGenre()
+        {
+            btnAddGenre.Show();
+            btnGenreRemove.Hide();
+            btnGenreUpdate.Hide();
         }
     }
 }

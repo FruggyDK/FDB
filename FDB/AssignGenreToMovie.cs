@@ -56,7 +56,7 @@ namespace FDB
 
         private void btnRemoveGenre_Click(object sender, EventArgs e) 
         {
-            bool result = Database.RemoveGenreFromMovie(mov_id, selectedGenId);
+            bool result = Database.DeleteGenreFromMovie(mov_id, selectedGenId);
             if (result)
             {
                 lbSelectedGenres_Update();

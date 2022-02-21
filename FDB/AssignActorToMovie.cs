@@ -81,7 +81,7 @@ namespace FDB
 
         private void btnRemoveActor_Click(object sender, EventArgs e)
         {
-            bool result = Database.RemoveActorFromMovie(mov_id, selectedActId);
+            bool result = Database.DeleteActorFromMovie(mov_id, selectedActId);
             if (result)
             {
                 txtRole.Clear();

@@ -154,10 +154,11 @@
             this.label5.TabIndex = 21;
             this.label5.Text = "Cover image";
             // 
-            // pictureBox1
+            // pbPreview
             // 
+            this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pbPreview.Location = new System.Drawing.Point(367, 251);
-            this.pbPreview.Name = "pictureBox1";
+            this.pbPreview.Name = "pbPreview";
             this.pbPreview.Size = new System.Drawing.Size(85, 84);
             this.pbPreview.TabIndex = 22;
             this.pbPreview.TabStop = false;

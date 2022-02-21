@@ -98,7 +98,7 @@
             this.genreToolStripMenuItem});
             this.addNewEntryToolStripMenuItem.Name = "addNewEntryToolStripMenuItem";
             this.addNewEntryToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.addNewEntryToolStripMenuItem.Text = "add new entry";
+            this.addNewEntryToolStripMenuItem.Text = "Manage entities";
             // 
             // movieToolStripMenuItem
             // 

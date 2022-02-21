@@ -97,6 +97,23 @@ namespace FDB
             addGenre addGenre = new addGenre();
             addGenre.StartPosition = FormStartPosition.CenterParent;
             addGenre.Show();
+
+            /*
+            FormCollection fc = Application.OpenForms;
+            foreach (Form form in fc)
+            {
+                if (form.Name == addGenre.Name)
+                {
+                    
+                } else
+                {
+                    
+                }
+            }
+
+            */
+
+
         }
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
