@@ -7,8 +7,8 @@ namespace FDB
 {
     public partial class AssignGenreToMovie : Form
     {
-        private DataTable searchedGenres = new DataTable();
-        private DataTable selectedGenres = new DataTable();
+        private DataTable searchedGenres;
+        private DataTable selectedGenres;
         private int mov_id;
         int selectedGenId;
 
