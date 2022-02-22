@@ -151,5 +151,10 @@ namespace FDB
             btnActorUpdate.Hide();
             btnAddActor.Show();
         }
+
+        private void addActor_Click(object sender, EventArgs e)
+        {
+            ShowBtnAddActor();
+        }
     }
 }

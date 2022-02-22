@@ -28,18 +28,12 @@ namespace FDB
             btnAssignActor.Hide();
             btnUpdateActor.Hide();
             UpdateDataGrid();
+            DisplaySearchedActors();
         }
 
         private void txtActSearch_TextChanged(object sender, EventArgs e)
         {
-            lbSearchedActors.Items.Clear();
-
-            searchedActors = Database.GetActorsFromQuery(txtActSearch.Text);
-
-            for (int i = 0; i < searchedActors.Rows.Count; i++)
-            {
-                lbSearchedActors.Items.Add(searchedActors.Rows[i]["Actor"].ToString());
-            }
+            DisplaySearchedActors();
         }
 
         private void UpdateDataGrid()
@@ -128,6 +122,19 @@ namespace FDB
         private void txtActSearch_Click(object sender, EventArgs e)
         {
             txtRole.Clear();
+            selectedActId = 0;
+        }
+
+        private void DisplaySearchedActors()
+        {
+            lbSearchedActors.Items.Clear();
+
+            searchedActors = Database.GetActorsFromQuery(txtActSearch.Text);
+
+            for (int i = 0; i < searchedActors.Rows.Count; i++)
+            {
+                lbSearchedActors.Items.Add(searchedActors.Rows[i]["Actor"].ToString());
+            }
         }
     }
 }

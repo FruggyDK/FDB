@@ -8,7 +8,6 @@ namespace FDB
 {
     public partial class addMovie : Form
     {
-        private int mov_id;
         string img_path = string.Empty;
         private DataTable moviesList;
         private int selectedMovieId;
@@ -35,22 +34,27 @@ namespace FDB
             int play_time = Int32.Parse(txtRuntime.Text);
             string resume = txtResume.Text;
 
-            this.mov_id = Database.InsertMovieToDatabase(title, year, play_time, resume, img_path);
-            selectedMovieId = mov_id;
+            selectedMovieId = Database.InsertMovieToDatabase(
+                title,
+                year,
+                play_time,
+                resume,
+                img_path
+            );
             UpdateDataGrid();
         }
 
         private void btnAssignActors_Click(object sender, EventArgs e)
         {
-            if (this.mov_id != 0)
+            if (selectedMovieId != 0)
             {
-                AssignActorToMovie assignActorToMovie = new AssignActorToMovie(this.mov_id);
+                AssignActorToMovie assignActorToMovie = new AssignActorToMovie(selectedMovieId);
                 assignActorToMovie.ShowInTaskbar = false;
                 assignActorToMovie.Show();
             }
             else
             {
-                MessageBox.Show("You must add a movie before adding actors");
+                MessageBox.Show("You must add or select a movie before adding actors");
             }
         }
 
@@ -73,15 +77,15 @@ namespace FDB
 
         private void btnAssignGenres_Click(object sender, EventArgs e)
         {
-            if (this.mov_id != 0)
+            if (selectedMovieId != 0)
             {
-                AssignGenreToMovie assignGenreToMovie = new AssignGenreToMovie(this.mov_id);
+                AssignGenreToMovie assignGenreToMovie = new AssignGenreToMovie(selectedMovieId);
                 assignGenreToMovie.ShowInTaskbar = false;
                 assignGenreToMovie.Show();
             }
             else
             {
-                MessageBox.Show("You must add a movie before adding genres");
+                MessageBox.Show("You must add or select a movie before adding genres");
             }
         }
 
@@ -124,7 +128,6 @@ namespace FDB
             if (index != -1)
             {
                 selectedMovieId = (int)moviesList.Rows[index]["mov_id"];
-                mov_id = selectedMovieId;
 
                 txtTitle.Text = moviesList.Rows[index]["title"].ToString();
                 txtYear.Text = moviesList.Rows[index]["year"].ToString();
@@ -169,14 +172,21 @@ namespace FDB
 
         private void ShowBtnAddMovie()
         {
+            selectedMovieId = 0;
             txtTitle.Clear();
             txtRuntime.Clear();
             txtResume.Clear();
             txtYear.Clear();
+            dataGridView1.ClearSelection();
             pbPreview.Image = null;
             btnMovieUpdate.Hide();
             btnMovieRemove.Hide();
             btnAddMovie.Show();
+        }
+
+        private void addMovie_Click(object sender, EventArgs e)
+        {
+            ShowBtnAddMovie();
         }
     }
 }

@@ -20,21 +20,17 @@ namespace FDB
 
         private void AssignGenreToMovie_Load(object sender, EventArgs e)
         {
+            label1.Text = "Adding genres to movie with id: " + mov_id.ToString();
             btnAssignGenre.Hide();
             btnRemoveGenre.Location = btnAssignGenre.Location;
             btnRemoveGenre.Hide();
             lbSelectedGenres_Update();
+            DisplaySearchedGenres();
         }
 
         private void txtGenSearch_TextChanged(object sender, EventArgs e)
         {
-            lbSearchedGenres.Items.Clear();
-            searchedGenres = Database.GetGenresFromQuery(txtGenSearch.Text);
-
-            for (int i = 0; i < searchedGenres.Rows.Count; i++)
-            {
-                lbSearchedGenres.Items.Add(searchedGenres.Rows[i]["gen_title"].ToString());
-            }
+            DisplaySearchedGenres();
         }
 
         private void btnAssignGenre_Click(object sender, EventArgs e)
@@ -96,5 +92,17 @@ namespace FDB
                 btnAssignGenre.Hide();
             }
         }
+
+        private void DisplaySearchedGenres()
+        {
+            lbSearchedGenres.Items.Clear();
+            searchedGenres = Database.GetGenresFromQuery(txtGenSearch.Text);
+
+            for (int i = 0; i < searchedGenres.Rows.Count; i++)
+            {
+                lbSearchedGenres.Items.Add(searchedGenres.Rows[i]["gen_title"].ToString());
+            }
+        }
+        
     }
 }

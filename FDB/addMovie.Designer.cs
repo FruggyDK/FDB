@@ -211,7 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(615, 322);
+            this.ClientSize = new System.Drawing.Size(604, 300);
             this.Controls.Add(this.btnMovieRemove);
             this.Controls.Add(this.btnMovieUpdate);
             this.Controls.Add(this.dataGridView1);
@@ -231,6 +231,7 @@
             this.Name = "addMovie";
             this.Text = "addMovie";
             this.Load += new System.EventHandler(this.addMovie_Load);
+            this.Click += new System.EventHandler(this.addMovie_Click);
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

@@ -186,6 +186,7 @@
             this.Name = "addActor";
             this.Text = "addActor";
             this.Load += new System.EventHandler(this.addActor_Load);
+            this.Click += new System.EventHandler(this.addActor_Click);
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

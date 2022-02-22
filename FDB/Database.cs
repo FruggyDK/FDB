@@ -164,7 +164,7 @@ namespace FDB
                 CommandText =
                     "select movie_cast.act_id, concat(trim(actor.act_fname), ' ', trim(actor.act_lname)) as Actor, movie_cast.role from movie_cast JOIN actor on movie_cast.act_id = actor.act_id and movie_cast.mov_id = "
                     + mov_id
-                    + ";"
+                    + "order by act_id desc;"
             };
 
             DataTable dt = new DataTable();
@@ -200,7 +200,12 @@ namespace FDB
             {
                 Connection = connection,
                 CommandType = CommandType.Text,
-                CommandText = "select * from " + tables[(int)table] + ";"
+                CommandText =
+                    "select * from "
+                    + tables[(int)table]
+                    + " order by "
+                    + tables[(int)table].Substring(0, 3)
+                    + "_id desc;"
             };
             DataTable dt = new DataTable();
             try
@@ -650,7 +655,7 @@ namespace FDB
                 Connection = connection,
                 CommandType = CommandType.Text,
                 CommandText =
-                    "select *, concat(trim(act_fname), ' ', trim(act_lname)) as Actor from actor;"
+                    "select *, concat(trim(act_fname), ' ', trim(act_lname)) as Actor from actor order by act_id desc;"
             };
             DataTable dt = new DataTable();
             try
