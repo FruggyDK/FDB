@@ -210,7 +210,6 @@ namespace FDB
                 }
 
                 //TODO: dynamically add images and actors according to movie from DB
-                MessageBox.Show(imgs.Images.Count.ToString());
                 lvActors.LargeImageList = imgs;
                 lvActors.Items.Add("Michael Carrick \nas Spiderman", 0);
                 lvActors.Items.Add("Diego Costa", 1);

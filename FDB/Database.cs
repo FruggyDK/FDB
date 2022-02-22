@@ -136,7 +136,7 @@ namespace FDB
         {
             return GetEntitiesFromQuery(
                 Table.Actor,
-                "act_id, concat(trim(actor.act_fname), ' ', trim(actor.act_lname)) as Actor",
+                "act_id, concat(trim(actor.act_fname), ' ', trim(actor.act_lname)) as Actor, act_dob, act_img_path",
                 "concat(trim(actor.act_fname), ' ', trim(actor.act_lname))",
                 query
             );
@@ -267,7 +267,7 @@ namespace FDB
                 Connection = connection,
                 CommandType = CommandType.Text,
                 CommandText =
-                    "insert into movie(title, year, play_time, resume, img_path) values(@1, @2, @3, @4, @5) returning mov_id;"
+                    "insert into movie(title, year, runtime, resume, img_path) values(@1, @2, @3, @4, @5) returning mov_id;"
             };
             cmd.Parameters.AddWithValue("@1", title);
             cmd.Parameters.AddWithValue("@2", year);
@@ -588,7 +588,11 @@ namespace FDB
             return true;
         }
 
-        public static bool InsertActorToDatabase(string act_fname, string act_lname, string img_path)
+        public static bool InsertActorToDatabase(
+            string act_fname,
+            string act_lname,
+            string img_path
+        )
         {
             NpgsqlConnection connection = new NpgsqlConnection(connectionString);
             connection.Open();
@@ -598,7 +602,8 @@ namespace FDB
             {
                 Connection = connection,
                 CommandType = CommandType.Text,
-                CommandText = "insert into actor(act_fname, act_lname, act_img_path) values(@1, @2, @3) returning act_id"
+                CommandText =
+                    "insert into actor(act_fname, act_lname, act_img_path) values(@1, @2, @3) returning act_id"
             };
             cmd.Parameters.AddWithValue("@1", act_fname);
             cmd.Parameters.AddWithValue("@2", act_lname);
@@ -611,7 +616,12 @@ namespace FDB
                 cmd.Parameters.AddWithValue("@3", DBNull.Value);
             }
 
-            cmd.Parameters.Add(new NpgsqlParameter("act_id", DbType.Int32) { Direction = ParameterDirection.Output });
+            cmd.Parameters.Add(
+                new NpgsqlParameter("act_id", DbType.Int32)
+                {
+                    Direction = ParameterDirection.Output
+                }
+            );
 
             // TODO: add constraint to name
             try
@@ -639,7 +649,8 @@ namespace FDB
             {
                 Connection = connection,
                 CommandType = CommandType.Text,
-                CommandText = "select act_id, concat(trim(act_fname), ' ', trim(act_lname)) as Actor from actor;"
+                CommandText =
+                    "select *, concat(trim(act_fname), ' ', trim(act_lname)) as Actor from actor;"
             };
             DataTable dt = new DataTable();
             try
@@ -659,6 +670,162 @@ namespace FDB
             cmd.Dispose();
             connection.Close();
             return dt;
+        }
+
+        public static bool DeleteActorFromDatabase(int gen_id)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "delete from actor where act_id = $1"
+            };
+            cmd.Parameters.AddWithValue(gen_id);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show(cmd.CommandText);
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return true;
+        }
+
+        public static bool UpdateActor(
+            int act_id,
+            string act_fname,
+            string act_lname,
+            string img_path
+        )
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+
+            //TODO: add dob parameter
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText =
+                    "update actor set act_fname = @1, act_lname = @2, act_img_path = @3 where act_id = @4"
+            };
+            cmd.Parameters.AddWithValue("@1", act_fname);
+            cmd.Parameters.AddWithValue("@2", act_lname);
+            if (img_path != string.Empty)
+            {
+                cmd.Parameters.AddWithValue("@3", img_path);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@3", DBNull.Value);
+            }
+            cmd.Parameters.AddWithValue("@4", act_id);
+
+            cmd.Parameters.Add(
+                new NpgsqlParameter("act_id", DbType.Int32)
+                {
+                    Direction = ParameterDirection.Output
+                }
+            );
+
+            // TODO: add constraint to name
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (NpgsqlException E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+            cmd.Dispose();
+            connection.Close();
+            return true;
+        }
+
+        public static bool DeleteMovieFromDatabase(int mov_id)
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText = "delete from movie where mov_id = $1"
+            };
+            cmd.Parameters.AddWithValue(mov_id);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show(cmd.CommandText);
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+
+            cmd.Dispose();
+            connection.Close();
+            return true;
+        }
+
+        public static bool UpdateMovie(
+            int mov_id,
+            string title,
+            int year,
+            int runtime,
+            string resume,
+            string img_path
+        )
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            connection.Open();
+
+            //TODO: add dob parameter
+            NpgsqlCommand cmd = new NpgsqlCommand
+            {
+                Connection = connection,
+                CommandType = CommandType.Text,
+                CommandText =
+                    "update movie set title = @1, year = @2, runtime = @3, resume = @4, img_path = @5 where mov_id = @6"
+            };
+            cmd.Parameters.AddWithValue("@1", title);
+            cmd.Parameters.AddWithValue("@2", year);
+            cmd.Parameters.AddWithValue("@3", runtime);
+            cmd.Parameters.AddWithValue("@4", resume);
+
+            if (img_path != string.Empty)
+            {
+                cmd.Parameters.AddWithValue("@5", img_path);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("@5", DBNull.Value);
+            }
+            cmd.Parameters.AddWithValue("@6", mov_id);
+
+            // TODO: add constraint to name
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (NpgsqlException E)
+            {
+                MessageBox.Show(E.Message);
+                return false;
+            }
+            cmd.Dispose();
+            connection.Close();
+            return true;
         }
     }
 }

@@ -34,28 +34,31 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtYear = new System.Windows.Forms.TextBox();
-            this.txtPlay_time = new System.Windows.Forms.TextBox();
+            this.txtRuntime = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtResume = new System.Windows.Forms.TextBox();
             this.btnAssignActors = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btnLoadImage = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.pbPreview = new System.Windows.Forms.PictureBox();
             this.btnAssignGenres = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.btnMovieRemove = new System.Windows.Forms.Button();
+            this.btnMovieUpdate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // txtTitle
             // 
-            this.txtTitle.Location = new System.Drawing.Point(116, 30);
+            this.txtTitle.Location = new System.Drawing.Point(219, 14);
             this.txtTitle.Name = "txtTitle";
-            this.txtTitle.Size = new System.Drawing.Size(183, 20);
+            this.txtTitle.Size = new System.Drawing.Size(163, 20);
             this.txtTitle.TabIndex = 0;
             // 
             // btnAddMovie
             // 
-            this.btnAddMovie.Location = new System.Drawing.Point(160, 334);
+            this.btnAddMovie.Location = new System.Drawing.Point(243, 208);
             this.btnAddMovie.Name = "btnAddMovie";
             this.btnAddMovie.Size = new System.Drawing.Size(75, 23);
             this.btnAddMovie.TabIndex = 2;
@@ -66,7 +69,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(39, 33);
+            this.label1.Location = new System.Drawing.Point(142, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(27, 13);
             this.label1.TabIndex = 3;
@@ -75,39 +78,39 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 87);
+            this.label2.Location = new System.Drawing.Point(142, 52);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.Size = new System.Drawing.Size(49, 13);
             this.label2.TabIndex = 10;
-            this.label2.Text = "rel_year";
+            this.label2.Text = "Rel_year";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(39, 143);
+            this.label3.Location = new System.Drawing.Point(142, 88);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.Size = new System.Drawing.Size(46, 13);
             this.label3.TabIndex = 12;
-            this.label3.Text = "runtime";
+            this.label3.Text = "Runtime";
             // 
             // txtYear
             // 
-            this.txtYear.Location = new System.Drawing.Point(116, 87);
+            this.txtYear.Location = new System.Drawing.Point(219, 52);
             this.txtYear.Name = "txtYear";
-            this.txtYear.Size = new System.Drawing.Size(183, 20);
+            this.txtYear.Size = new System.Drawing.Size(163, 20);
             this.txtYear.TabIndex = 13;
             // 
-            // txtPlay_time
+            // txtRuntime
             // 
-            this.txtPlay_time.Location = new System.Drawing.Point(116, 136);
-            this.txtPlay_time.Name = "txtPlay_time";
-            this.txtPlay_time.Size = new System.Drawing.Size(183, 20);
-            this.txtPlay_time.TabIndex = 14;
+            this.txtRuntime.Location = new System.Drawing.Point(219, 88);
+            this.txtRuntime.Name = "txtRuntime";
+            this.txtRuntime.Size = new System.Drawing.Size(163, 20);
+            this.txtRuntime.TabIndex = 14;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(39, 185);
+            this.label4.Location = new System.Drawing.Point(142, 126);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 13);
             this.label4.TabIndex = 17;
@@ -115,17 +118,17 @@
             // 
             // txtResume
             // 
-            this.txtResume.Location = new System.Drawing.Point(116, 182);
+            this.txtResume.Location = new System.Drawing.Point(219, 126);
             this.txtResume.Multiline = true;
             this.txtResume.Name = "txtResume";
-            this.txtResume.Size = new System.Drawing.Size(183, 73);
+            this.txtResume.Size = new System.Drawing.Size(163, 73);
             this.txtResume.TabIndex = 18;
             // 
             // btnAssignActors
             // 
-            this.btnAssignActors.Location = new System.Drawing.Point(345, 89);
+            this.btnAssignActors.Location = new System.Drawing.Point(12, 179);
             this.btnAssignActors.Name = "btnAssignActors";
-            this.btnAssignActors.Size = new System.Drawing.Size(117, 23);
+            this.btnAssignActors.Size = new System.Drawing.Size(94, 23);
             this.btnAssignActors.TabIndex = 19;
             this.btnAssignActors.Text = "Assign Actors";
             this.btnAssignActors.UseVisualStyleBackColor = true;
@@ -137,55 +140,88 @@
             // 
             // btnLoadImage
             // 
-            this.btnLoadImage.Location = new System.Drawing.Point(116, 280);
+            this.btnLoadImage.Location = new System.Drawing.Point(12, 127);
             this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(183, 23);
+            this.btnLoadImage.Size = new System.Drawing.Size(94, 23);
             this.btnLoadImage.TabIndex = 20;
             this.btnLoadImage.Text = "Load Image";
             this.btnLoadImage.UseVisualStyleBackColor = true;
             this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(39, 285);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(66, 13);
-            this.label5.TabIndex = 21;
-            this.label5.Text = "Cover image";
-            // 
             // pbPreview
             // 
             this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pbPreview.Location = new System.Drawing.Point(367, 251);
+            this.pbPreview.Location = new System.Drawing.Point(12, 14);
             this.pbPreview.Name = "pbPreview";
-            this.pbPreview.Size = new System.Drawing.Size(85, 84);
+            this.pbPreview.Size = new System.Drawing.Size(94, 104);
             this.pbPreview.TabIndex = 22;
             this.pbPreview.TabStop = false;
             // 
             // btnAssignGenres
             // 
-            this.btnAssignGenres.Location = new System.Drawing.Point(345, 143);
+            this.btnAssignGenres.Location = new System.Drawing.Point(12, 208);
             this.btnAssignGenres.Name = "btnAssignGenres";
-            this.btnAssignGenres.Size = new System.Drawing.Size(117, 23);
+            this.btnAssignGenres.Size = new System.Drawing.Size(94, 23);
             this.btnAssignGenres.TabIndex = 23;
             this.btnAssignGenres.Text = "Assign Genres";
             this.btnAssignGenres.UseVisualStyleBackColor = true;
             this.btnAssignGenres.Click += new System.EventHandler(this.btnAssignGenres_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dataGridView1.Location = new System.Drawing.Point(439, 14);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.ShowCellErrors = false;
+            this.dataGridView1.ShowCellToolTips = false;
+            this.dataGridView1.ShowRowErrors = false;
+            this.dataGridView1.Size = new System.Drawing.Size(145, 266);
+            this.dataGridView1.TabIndex = 24;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            // 
+            // btnMovieRemove
+            // 
+            this.btnMovieRemove.Location = new System.Drawing.Point(243, 237);
+            this.btnMovieRemove.Name = "btnMovieRemove";
+            this.btnMovieRemove.Size = new System.Drawing.Size(75, 23);
+            this.btnMovieRemove.TabIndex = 26;
+            this.btnMovieRemove.Text = "Remove";
+            this.btnMovieRemove.UseVisualStyleBackColor = true;
+            this.btnMovieRemove.Click += new System.EventHandler(this.btnMovieRemove_Click);
+            // 
+            // btnMovieUpdate
+            // 
+            this.btnMovieUpdate.Location = new System.Drawing.Point(243, 266);
+            this.btnMovieUpdate.Name = "btnMovieUpdate";
+            this.btnMovieUpdate.Size = new System.Drawing.Size(75, 23);
+            this.btnMovieUpdate.TabIndex = 25;
+            this.btnMovieUpdate.Text = "Update";
+            this.btnMovieUpdate.UseVisualStyleBackColor = true;
+            this.btnMovieUpdate.Click += new System.EventHandler(this.btnMovieUpdate_Click);
+            // 
             // addMovie
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(493, 382);
+            this.ClientSize = new System.Drawing.Size(615, 322);
+            this.Controls.Add(this.btnMovieRemove);
+            this.Controls.Add(this.btnMovieUpdate);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnAssignGenres);
             this.Controls.Add(this.pbPreview);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.btnLoadImage);
             this.Controls.Add(this.btnAssignActors);
             this.Controls.Add(this.txtResume);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtPlay_time);
+            this.Controls.Add(this.txtRuntime);
             this.Controls.Add(this.txtYear);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -194,7 +230,9 @@
             this.Controls.Add(this.txtTitle);
             this.Name = "addMovie";
             this.Text = "addMovie";
+            this.Load += new System.EventHandler(this.addMovie_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,14 +246,16 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtYear;
-        private System.Windows.Forms.TextBox txtPlay_time;
+        private System.Windows.Forms.TextBox txtRuntime;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtResume;
         private System.Windows.Forms.Button btnAssignActors;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btnLoadImage;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pbPreview;
         private System.Windows.Forms.Button btnAssignGenres;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btnMovieRemove;
+        private System.Windows.Forms.Button btnMovieUpdate;
     }
 }
