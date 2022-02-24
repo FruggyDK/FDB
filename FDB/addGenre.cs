@@ -101,8 +101,15 @@ namespace FDB
         private void ShowBtnAddGenre()
         {
             btnAddGenre.Show();
+            dataGridView1.ClearSelection();
+            txtGenreTitle.Clear();
             btnGenreRemove.Hide();
             btnGenreUpdate.Hide();
+        }
+
+        private void addGenre_Click(object sender, EventArgs e)
+        {
+            ShowBtnAddGenre();
         }
     }
 }

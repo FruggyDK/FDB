@@ -1,7 +1,5 @@
-﻿using Npgsql;
-using System;
+﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -36,7 +34,11 @@ namespace FDB
             bool onlyLetters = (act_fname + act_lname).All(Char.IsLetter);
             if (onlyLetters && (act_fname != string.Empty && act_lname != string.Empty))
             {
-                bool result = Database.InsertActorToDatabase(act_fname, act_lname, img_path);
+                bool result = Database.InsertActorToDatabase(
+                    act_fname,
+                    act_lname,
+                    img_path
+                );
                 if (result)
                 {
                     UpdateDataGrid();
@@ -122,6 +124,7 @@ namespace FDB
 
         private void btnActorUpdate_Click(object sender, EventArgs e)
         {
+            MessageBox.Show(dateTimePicker1.Value.ToString("dd-MM-yyyy"));
             bool onlyLetters = (txtActFname.Text + txtActLname.Text).All(Char.IsLetter);
             if (
                 onlyLetters
@@ -147,6 +150,7 @@ namespace FDB
             txtActFname.Clear();
             txtActLname.Clear();
             pbPreview.Image = null;
+            dataGridView1.ClearSelection();
             btnActorRemove.Hide();
             btnActorUpdate.Hide();
             btnAddActor.Show();

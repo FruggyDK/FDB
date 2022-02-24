@@ -10,6 +10,9 @@ namespace FDB
     {
         private SearchType currentSearchType = SearchType.Movies;
         private Scene currentScene = Scene.frontPage;
+        private int selectedResultId = 0;
+        private int selectedResultIndex = 0;
+        private DataTable results = new DataTable();
 
         private enum Scene
         {
@@ -29,7 +32,6 @@ namespace FDB
         public Form1()
         {
             InitializeComponent();
-            LoadActorsFromMovie(47);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -43,13 +45,13 @@ namespace FDB
                 tab.Text = string.Empty;
             }
 
-            menuStrip1.BringToFront();
-            txtSøg.Focus();
-            Database.GetActorsFromMovie(47);
+            pbCoverImage.SizeMode = PictureBoxSizeMode.StretchImage;
+            pbHeadshot.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            //TODO: fix xD
-            cbSearchType.SelectedItem = cbSearchType.Items[0];
+            menuStrip1.BringToFront();
+            txtSearch.Focus();
             currentSearchType = SearchType.Movies;
+            cbSearchType.SelectedItem = cbSearchType.Items[(int)currentSearchType];
         }
 
         //TODO: fix spawning position of child forms after moving parent form
@@ -67,23 +69,45 @@ namespace FDB
             addActor.Show();
         }
 
-        // TODO: add checks
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string searchQuery = (currentScene == Scene.frontPage) ? txtSøg.Text : textBox1.Text;
+            string searchQuery = string.Empty;
+
+            switch (currentScene)
+            {
+                case Scene.frontPage:
+                    searchQuery = txtSearch.Text.Trim();
+                    break;
+                case Scene.resultPage:
+                    searchQuery = txtSeach1.Text.Trim();
+                    break;
+                case Scene.moviePage:
+                    searchQuery = txtSearch2.Text.Trim();
+                    break;
+                case Scene.actorPage:
+                    searchQuery = txtSearch3.Text.Trim();
+                    break;
+                default:
+                    break;
+            }
+
+            lblSearchQuery.Text = "Showing results for '" + searchQuery + "'";
 
             switch (currentSearchType)
             {
                 case SearchType.Movies:
-                    dgMovieResults.DataSource = Database.GetMoviesFromQuery(searchQuery);
+                    results = Database.GetMoviesFromQuery(searchQuery);
                     break;
                 case SearchType.Actors:
-                    dgMovieResults.DataSource = Database.GetActorsFromQuery(searchQuery);
+                    results = Database.GetActorsFromQuery(searchQuery);
                     break;
                 case SearchType.Genres:
-                    dgMovieResults.DataSource = Database.GetGenresFromQuery(searchQuery);
+                    results = Database.GetGenresFromQuery(searchQuery);
                     break;
             }
+
+            dgResults.DataSource = results;
+            dgResults.ClearSelection();
 
             if (currentScene != Scene.resultPage)
             {
@@ -133,21 +157,27 @@ namespace FDB
             switch (newScene)
             {
                 case Scene.frontPage:
-                    txtSøg.Clear();
+                    txtSearch.Clear();
+                    cbSearchType.SelectedItem = cbSearchType.Items[(int)currentSearchType];
                     SceneControl.SelectTab(0);
                     break;
 
                 case Scene.resultPage:
-                    cbSearchType1.SelectedIndex = cbSearchType.SelectedIndex;
-                    textBox1.Text = txtSøg.Text;
+                    txtSeach1.Clear();
+                    cbSearchType1.SelectedItem = cbSearchType.Items[(int)currentSearchType];
                     SceneControl.SelectTab(1);
                     break;
 
                 case Scene.moviePage:
+                    txtSearch2.Clear();
+                    cbSearchType2.SelectedItem = cbSearchType.Items[(int)currentSearchType];
                     SceneControl.SelectTab(2);
                     break;
 
                 case Scene.actorPage:
+                    txtSearch3.Clear();
+                    cbSearchType3.SelectedItem = cbSearchType.Items[(int)currentSearchType];
+                    SceneControl.SelectTab(3);
                     break;
 
                 default:
@@ -156,83 +186,27 @@ namespace FDB
             currentScene = newScene;
         }
 
-        //TODO: add dynamic movie loading from DB
-        private void tbMoviePage_Selected(object sender, TabControlEventArgs e)
-        {
-            lblResume.Text = "sdahduashdhauhsduashdua";
-            lblTitle.Text = "HEJ MED DIG";
-            lblScore.Text = 10.ToString();
-            pictureBox1.Load("C:\\Users\\chris\\OneDrive\\Billeder\\Udklip.PNG");
-        }
-
-        //TODO: fix
-        private DataTable LoadActorsFromMovie(int mov_id)
-        {
-            NpgsqlConnection connection = new NpgsqlConnection(
-                "Server=localhost;"
-                    + "Port=5432;"
-                    + "Database=FDB;"
-                    + "User Id=postgres;"
-                    + "Password=Nta87pxm10;"
-            );
-            connection.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandType = CommandType.Text;
-            //TODO: consider changing the following expression to a postgresql function, to simplify call
-            cmd.CommandText = "select movie.img_path from movie;";
-            //"select movie_cast.act_id, concat(trim(actor.act_fname), ' ', trim(actor.act_lname)) as Actor, movie_cast.role from movie_cast JOIN actor on movie_cast.act_id = actor.act_id and movie_cast.mov_id = " + mov_id + ";";
-            //cmd.CommandText = "select movie.img_path, movie_cast.act_id, concat(trim(actor.act_fname), ' ', trim(actor.act_lname)) as Actor, movie_cast.role from movie_cast JOIN actor on movie_cast.act_id = actor.act_id and movie_cast.mov_id = " + mov_id + ";";
-
-            NpgsqlDataReader dr = cmd.ExecuteReader();
-            if (dr.HasRows)
-            {
-                DataTable dt = new DataTable();
-                dt.Load(dr);
-                lvActors.Columns.Add("Image", 200);
-                ImageList imgs = new ImageList();
-                imgs.ImageSize = new Size(50, 50);
-
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    if (dt.Rows[i]["img_path"].ToString().StartsWith("C:"))
-                    {
-                        try
-                        {
-                            //listView1.Items.Add(dt.Rows[i][])
-                            imgs.Images.Add(Image.FromFile(dt.Rows[i]["img_path"].ToString()));
-                        }
-                        catch (Exception e)
-                        {
-                            MessageBox.Show(e.Message);
-                        }
-                    }
-                }
-
-                //TODO: dynamically add images and actors according to movie from DB
-                lvActors.LargeImageList = imgs;
-                lvActors.Items.Add("Michael Carrick \nas Spiderman", 0);
-                lvActors.Items.Add("Diego Costa", 1);
-                lvActors.Items.Add("David De Gea", 2);
-                lvActors.Items.Add("Eden Hazard", 3);
-                lvActors.Items.Add("Anders Herera", 4);
-                lvActors.Items.Add("Oscar", 5);
-                lvActors.Items.Add("Aaron Ramsey", 6);
-                return dt;
-            }
-
-            cmd.Dispose();
-            connection.Close();
-
-            return new DataTable();
-        }
-
         private void cbSearchType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedIndex =
-                (currentScene == Scene.frontPage)
-                    ? cbSearchType.SelectedIndex
-                    : cbSearchType1.SelectedIndex;
+            int selectedIndex = 0;
+
+            switch (currentScene)
+            {
+                case Scene.frontPage:
+                    selectedIndex = cbSearchType.SelectedIndex;
+                    break;
+                case Scene.resultPage:
+                    selectedIndex = cbSearchType1.SelectedIndex;
+                    break;
+                case Scene.moviePage:
+                    selectedIndex = cbSearchType2.SelectedIndex;
+                    break;
+                case Scene.actorPage:
+                    selectedIndex = cbSearchType3.SelectedIndex;
+                    break;
+                default:
+                    break;
+            }
 
             switch (selectedIndex)
             {
@@ -248,11 +222,143 @@ namespace FDB
             }
         }
 
-        private void lvActors_SelectedIndexChanged(object sender, EventArgs e)
+        private void dgResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            MessageBox.Show(lvActors.SelectedItems.ToString());
+            int index = e.RowIndex;
+            if (index != -1)
+            {
+                selectedResultId = (int)results.Rows[index][0];
+                selectedResultIndex = index;
+
+                switch (currentSearchType)
+                {
+                    case SearchType.Movies:
+                        TransitionTo(Scene.moviePage);
+                        break;
+                    case SearchType.Actors:
+                        TransitionTo(Scene.actorPage);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
-        //TODO: implement actors gallery for movie page. CHECK this: http://csharphelper.com/blog/2018/04/display-database-pictures-in-a-listview-control-in-c/
+        // Function called when entering the MoviePage scene
+        private void tpMoviePage_Enter(object sender, EventArgs e)
+        {
+            string title = results.Rows[selectedResultIndex]["title"].ToString().Trim();
+            string year = results.Rows[selectedResultIndex]["year"].ToString();
+            string runtime = results.Rows[selectedResultIndex]["runtime"].ToString();
+
+            lblResume.Text = results.Rows[selectedResultIndex]["resume"].ToString().Trim();
+            lblTitle.Text = title + " (" + year + ")";
+            lblRuntime.Text = "Duration: " + runtime + " minutes";
+
+            string img_path = results.Rows[selectedResultIndex]["img_path"].ToString();
+            if (img_path != String.Empty)
+            {
+                pbCoverImage.Load(img_path);
+            }
+            else
+            {
+                pbCoverImage.Image = null;
+            }
+
+            ShowActors();
+            ShowGenres();
+        }
+
+        private void tpActorPage_Enter(object sender, EventArgs e)
+        {
+            string name = results.Rows[selectedResultIndex]["Actor"].ToString().Trim();
+            string dob = results.Rows[selectedResultIndex]["act_dob"].ToString();
+
+            lblName.Text = name;
+            lblDob.Text = "Date of birth: " + dob;
+
+            string img_path = results.Rows[selectedResultIndex]["act_img_path"].ToString();
+            if (img_path != String.Empty)
+            {
+                pbHeadshot.Load(img_path);
+            }
+            else
+            {
+                pbHeadshot.Image = null;
+            }
+
+            ShowMovies();
+        }
+
+        private void ShowActors()
+        {
+            lvActors.Items.Clear();
+            ImageList imgs = new ImageList { ImageSize = new Size(50, 50) };
+
+            lvActors.Columns.Add("Actor", 250);
+            lvActors.LargeImageList = imgs;
+
+            DataTable actors = Database.GetActorsFromMovie(selectedResultId);
+            for (int i = 0; i < actors.Rows.Count; i++)
+            {
+                string act_img_path = actors.Rows[i]["act_img_path"].ToString();
+                string actor = actors.Rows[i]["Actor"].ToString().Trim();
+                string role = actors.Rows[i]["role"].ToString().Trim();
+                if (act_img_path != string.Empty)
+                {
+                    try
+                    {
+                        imgs.Images.Add(Image.FromFile(act_img_path));
+                    }
+                    catch (Exception E)
+                    {
+                        MessageBox.Show(E.Message);
+                    }
+                }
+
+                // check and add empty actor image.
+                lvActors.Items.Add(actor + "\nas\n" + role, i);
+            }
+        }
+
+        private void ShowGenres()
+        {
+            lvGenres.Items.Clear();
+            DataTable genres = Database.GetGenresFromMovie(selectedResultId);
+            for (int i = 0; i < genres.Rows.Count; i++)
+            {
+                lvGenres.Items.Add(genres.Rows[i]["gen_title"].ToString().Trim());
+            }
+        }
+
+        private void ShowMovies()
+        {
+            lvMovies.Items.Clear();
+            ImageList imgs = new ImageList { ImageSize = new Size(50, 50) };
+
+            lvMovies.Columns.Add("Movies", 250);
+            lvMovies.LargeImageList = imgs;
+
+            DataTable movies = Database.GetActorsMovies(selectedResultId);
+            for (int i = 0; i < movies.Rows.Count; i++)
+            {
+                string img_path = movies.Rows[i]["img_path"].ToString();
+                string title = movies.Rows[i]["title"].ToString().Trim();
+                if (img_path != string.Empty)
+                {
+                    try
+                    {
+                        imgs.Images.Add(Image.FromFile(img_path));
+                    }
+                    catch (Exception E)
+                    {
+                        MessageBox.Show(E.Message);
+                    }
+                }
+
+                // check and add empty actor image.
+                lvMovies.Items.Add(title, i);
+            }
+        }
     }
 }

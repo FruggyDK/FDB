@@ -45,6 +45,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnMovieRemove = new System.Windows.Forms.Button();
             this.btnMovieUpdate = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -126,7 +127,7 @@
             // 
             // btnAssignActors
             // 
-            this.btnAssignActors.Location = new System.Drawing.Point(12, 179);
+            this.btnAssignActors.Location = new System.Drawing.Point(12, 195);
             this.btnAssignActors.Name = "btnAssignActors";
             this.btnAssignActors.Size = new System.Drawing.Size(94, 23);
             this.btnAssignActors.TabIndex = 19;
@@ -140,7 +141,7 @@
             // 
             // btnLoadImage
             // 
-            this.btnLoadImage.Location = new System.Drawing.Point(12, 127);
+            this.btnLoadImage.Location = new System.Drawing.Point(12, 143);
             this.btnLoadImage.Name = "btnLoadImage";
             this.btnLoadImage.Size = new System.Drawing.Size(94, 23);
             this.btnLoadImage.TabIndex = 20;
@@ -153,13 +154,13 @@
             this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pbPreview.Location = new System.Drawing.Point(12, 14);
             this.pbPreview.Name = "pbPreview";
-            this.pbPreview.Size = new System.Drawing.Size(94, 104);
+            this.pbPreview.Size = new System.Drawing.Size(94, 111);
             this.pbPreview.TabIndex = 22;
             this.pbPreview.TabStop = false;
             // 
             // btnAssignGenres
             // 
-            this.btnAssignGenres.Location = new System.Drawing.Point(12, 208);
+            this.btnAssignGenres.Location = new System.Drawing.Point(12, 224);
             this.btnAssignGenres.Name = "btnAssignGenres";
             this.btnAssignGenres.Size = new System.Drawing.Size(94, 23);
             this.btnAssignGenres.TabIndex = 23;
@@ -175,7 +176,7 @@
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView1.Location = new System.Drawing.Point(439, 14);
+            this.dataGridView1.Location = new System.Drawing.Point(423, 14);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
@@ -183,7 +184,7 @@
             this.dataGridView1.ShowCellErrors = false;
             this.dataGridView1.ShowCellToolTips = false;
             this.dataGridView1.ShowRowErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(145, 266);
+            this.dataGridView1.Size = new System.Drawing.Size(161, 266);
             this.dataGridView1.TabIndex = 24;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
@@ -207,11 +208,20 @@
             this.btnMovieUpdate.UseVisualStyleBackColor = true;
             this.btnMovieUpdate.Click += new System.EventHandler(this.btnMovieUpdate_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 271);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(0, 13);
+            this.label5.TabIndex = 27;
+            // 
             // addMovie
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(604, 300);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.btnMovieRemove);
             this.Controls.Add(this.btnMovieUpdate);
             this.Controls.Add(this.dataGridView1);
@@ -258,5 +268,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnMovieRemove;
         private System.Windows.Forms.Button btnMovieUpdate;
+        private System.Windows.Forms.Label label5;
     }
 }

@@ -118,6 +118,7 @@
             this.Name = "addGenre";
             this.Text = "addGenre";
             this.Load += new System.EventHandler(this.addGenre_Load);
+            this.Click += new System.EventHandler(this.addGenre_Click);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

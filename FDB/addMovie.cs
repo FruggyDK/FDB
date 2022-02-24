@@ -1,5 +1,4 @@
-﻿using Npgsql;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
 
@@ -28,16 +27,17 @@ namespace FDB
 
         private void BtnaddMovie_Click(object sender, EventArgs e)
         {
-            //TODO: add check for empty input
+            //TODO: add check for all inputs
             string title = txtTitle.Text;
             int year = Int32.Parse(txtYear.Text);
-            int play_time = Int32.Parse(txtRuntime.Text);
+            int runtime = Int32.Parse(txtRuntime.Text);
+
             string resume = txtResume.Text;
 
             selectedMovieId = Database.InsertMovieToDatabase(
                 title,
                 year,
-                play_time,
+                runtime,
                 resume,
                 img_path
             );
@@ -91,6 +91,54 @@ namespace FDB
 
         private void btnMovieRemove_Click(object sender, EventArgs e)
         {
+            int actorsCount = Database.GetActorsFromMovie(selectedMovieId).Rows.Count;
+            int genresCount = Database.GetGenresFromMovie(selectedMovieId).Rows.Count;
+
+            if ((genresCount + actorsCount) == 0)
+            {
+                // Normal delete
+                bool result = Database.DeleteMovieFromDatabase(selectedMovieId);
+                if (result)
+                {
+                    UpdateDataGrid();
+                    ShowBtnAddMovie();
+                }
+            }
+            else
+            {
+                // Cascade delete. Could be implementet through Postgresql by adding ON DELETE CASCADE
+                var selectedOption = MessageBox.Show(
+                    "This movie contains actors and/or genres\nAre you sure you want to delete this? (You will be performing a cascade delete",
+                    "Cascade delete)",
+                    MessageBoxButtons.YesNoCancel
+                );
+                if (selectedOption == DialogResult.Yes)
+                {
+                    MovieCascadeDelete();
+                }
+            }
+        }
+
+        private void MovieCascadeDelete()
+        {
+            DataTable selectedActors = Database.GetActorsFromMovie(selectedMovieId);
+            DataTable selectedGenres = Database.GetGenresFromMovie(selectedMovieId);
+
+            // Delete all actors from this movie
+            for (int i = 0; i < selectedActors.Rows.Count; i++)
+            {
+                int act_id = (int)selectedActors.Rows[i]["act_id"];
+                Database.DeleteActorFromMovie(selectedMovieId, act_id);
+            }
+
+            // Delete all genres from this movie
+            for (int i = 0; i < selectedGenres.Rows.Count; i++)
+            {
+                int gen_id = (int)selectedGenres.Rows[i]["gen_id"];
+                Database.DeleteGenreFromMovie(selectedMovieId, gen_id);
+            }
+
+            // Now the movie can be deleted from the databse
             bool result = Database.DeleteMovieFromDatabase(selectedMovieId);
             if (result)
             {
@@ -128,7 +176,7 @@ namespace FDB
             if (index != -1)
             {
                 selectedMovieId = (int)moviesList.Rows[index]["mov_id"];
-
+                label5.Text = "Selcted mov_id = " + selectedMovieId.ToString();
                 txtTitle.Text = moviesList.Rows[index]["title"].ToString();
                 txtYear.Text = moviesList.Rows[index]["year"].ToString();
                 txtRuntime.Text = moviesList.Rows[index]["runtime"].ToString();
@@ -155,15 +203,12 @@ namespace FDB
 
             moviesList = Database.GetAllEntititesFromTable(Database.Table.Movie);
             DataTable dt = moviesList.Copy();
-
             dt.Columns.RemoveAt(0);
 
             for (int i = 0; i < 4; i++)
             {
                 dt.Columns.RemoveAt(1);
             }
-
-            // removes the act_id column from the datatable
 
             dataGridView1.DataSource = dt;
 
@@ -173,6 +218,7 @@ namespace FDB
         private void ShowBtnAddMovie()
         {
             selectedMovieId = 0;
+            label5.Text = String.Empty;
             txtTitle.Clear();
             txtRuntime.Clear();
             txtResume.Clear();

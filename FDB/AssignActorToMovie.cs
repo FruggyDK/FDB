@@ -45,8 +45,9 @@ namespace FDB
             DataTable dt = selectedActors.Copy();
             if (selectedActors.Columns.Count != 0)
             {
-                // removes the act_id column from the datatable
+                // removes the act_id and act_img_path column from the datatable
                 dt.Columns.RemoveAt(0);
+                dt.Columns.RemoveAt(2);
                 dataGridView1.DataSource = dt;
             }
             dataGridView1.ClearSelection();
@@ -83,7 +84,7 @@ namespace FDB
             }
         }
 
-        // TODO: fix dobbel blue higlight flash in datagridview1
+        // TODO: fix double blue higlight flash in datagridview1
         private void lbSearchedActors_SelectedIndexChanged(object sender, EventArgs e)
         {
             txtRole.Clear();
@@ -104,7 +105,7 @@ namespace FDB
                 txtRole.Text = selectedActors.Rows[selectedRowIndex]["role"].ToString();
                 btnRemoveActor.Show();
                 btnUpdateActor.Location = btnAssignActor.Location;
-                btnUpdateActor.Show(); // TODO: fix
+                btnUpdateActor.Show(); 
                 btnAssignActor.Hide();
             }
         }
