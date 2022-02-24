@@ -28,139 +28,132 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.txtServer = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.txtPort = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.txtDatabase = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.txtUserId = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.cBShowPassword = new System.Windows.Forms.CheckBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // txtServer
+            // 
+            this.txtServer.Location = new System.Drawing.Point(104, 19);
+            this.txtServer.Name = "txtServer";
+            this.txtServer.Size = new System.Drawing.Size(136, 20);
+            this.txtServer.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 33);
+            this.label1.Location = new System.Drawing.Point(18, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 0;
+            this.label1.TabIndex = 1;
             this.label1.Text = "Server";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(110, 33);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(151, 20);
-            this.textBox1.TabIndex = 1;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(110, 59);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(151, 20);
-            this.textBox2.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(36, 59);
+            this.label2.Location = new System.Drawing.Point(18, 49);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(26, 13);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 3;
             this.label2.Text = "Port";
             // 
-            // textBox3
+            // txtPort
             // 
-            this.textBox3.Location = new System.Drawing.Point(110, 85);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(151, 20);
-            this.textBox3.TabIndex = 5;
+            this.txtPort.Location = new System.Drawing.Point(104, 45);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(136, 20);
+            this.txtPort.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(36, 85);
+            this.label3.Location = new System.Drawing.Point(18, 75);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
-            this.label3.TabIndex = 4;
+            this.label3.TabIndex = 5;
             this.label3.Text = "Database";
             // 
-            // textBox4
+            // txtDatabase
             // 
-            this.textBox4.Location = new System.Drawing.Point(110, 111);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(151, 20);
-            this.textBox4.TabIndex = 7;
+            this.txtDatabase.Location = new System.Drawing.Point(104, 71);
+            this.txtDatabase.Name = "txtDatabase";
+            this.txtDatabase.Size = new System.Drawing.Size(136, 20);
+            this.txtDatabase.TabIndex = 4;
+            this.txtDatabase.Text = "Database";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(36, 111);
+            this.label4.Location = new System.Drawing.Point(18, 101);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 13);
-            this.label4.TabIndex = 6;
+            this.label4.TabIndex = 7;
             this.label4.Text = "User Id";
             // 
-            // txtPassword
+            // txtUserId
             // 
-            this.txtPassword.Location = new System.Drawing.Point(110, 137);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(151, 20);
-            this.txtPassword.TabIndex = 9;
-            this.txtPassword.UseSystemPasswordChar = true;
+            this.txtUserId.Location = new System.Drawing.Point(104, 97);
+            this.txtUserId.Name = "txtUserId";
+            this.txtUserId.Size = new System.Drawing.Size(136, 20);
+            this.txtUserId.TabIndex = 6;
+            this.txtUserId.Text = "Database";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(36, 137);
+            this.label5.Location = new System.Drawing.Point(18, 127);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 13);
-            this.label5.TabIndex = 8;
+            this.label5.TabIndex = 9;
             this.label5.Text = "Password";
             // 
-            // button1
+            // txtPassword
             // 
-            this.button1.Location = new System.Drawing.Point(110, 183);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(80, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Connect";
-            this.button1.UseVisualStyleBackColor = true;
+            this.txtPassword.Location = new System.Drawing.Point(104, 123);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(136, 20);
+            this.txtPassword.TabIndex = 8;
+            this.txtPassword.Text = "Password";
+            this.txtPassword.UseSystemPasswordChar = true;
             // 
-            // cBShowPassword
+            // btnConnect
             // 
-            this.cBShowPassword.AutoSize = true;
-            this.cBShowPassword.Location = new System.Drawing.Point(267, 143);
-            this.cBShowPassword.Name = "cBShowPassword";
-            this.cBShowPassword.Size = new System.Drawing.Size(15, 14);
-            this.cBShowPassword.TabIndex = 11;
-            this.cBShowPassword.UseVisualStyleBackColor = true;
-            this.cBShowPassword.CheckedChanged += new System.EventHandler(this.cBShowPassword_CheckedChanged);
+            this.btnConnect.Location = new System.Drawing.Point(79, 161);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(92, 26);
+            this.btnConnect.TabIndex = 10;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // ConnectToDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(294, 235);
-            this.Controls.Add(this.cBShowPassword);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.txtPassword);
+            this.ClientSize = new System.Drawing.Size(276, 199);
+            this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.txtUserId);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.txtDatabase);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtPort);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtServer);
             this.Name = "ConnectToDB";
             this.Text = "ConnectToDB";
+            this.Load += new System.EventHandler(this.ConnectToDB_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -168,17 +161,16 @@
 
         #endregion
 
+        private System.Windows.Forms.TextBox txtServer;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox txtDatabase;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.TextBox txtUserId;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox cBShowPassword;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Button btnConnect;
     }
 }

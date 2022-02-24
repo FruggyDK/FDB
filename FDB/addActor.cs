@@ -124,7 +124,6 @@ namespace FDB
 
         private void btnActorUpdate_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(dateTimePicker1.Value.ToString("dd-MM-yyyy"));
             bool onlyLetters = (txtActFname.Text + txtActLname.Text).All(Char.IsLetter);
             if (
                 onlyLetters

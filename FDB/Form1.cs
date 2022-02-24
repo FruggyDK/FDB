@@ -1,8 +1,9 @@
-﻿using Npgsql;
-using System;
+﻿using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Resources;
+using System.IO;
 
 namespace FDB
 {
@@ -10,9 +11,9 @@ namespace FDB
     {
         private SearchType currentSearchType = SearchType.Movies;
         private Scene currentScene = Scene.frontPage;
-        private int selectedResultId = 0;
-        private int selectedResultIndex = 0;
-        private DataTable results = new DataTable();
+        private int selectedResultId;
+        private int selectedResultIndex;
+        private DataTable results;
 
         private enum Scene
         {
@@ -121,30 +122,6 @@ namespace FDB
             addGenre addGenre = new addGenre();
             addGenre.StartPosition = FormStartPosition.CenterParent;
             addGenre.Show();
-
-            /*
-            FormCollection fc = Application.OpenForms;
-            foreach (Form form in fc)
-            {
-                if (form.Name == addGenre.Name)
-                {
-                    
-                } else
-                {
-                    
-                }
-            }
-
-            */
-
-
-        }
-
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ConnectToDB connectToDB = new ConnectToDB();
-            connectToDB.StartPosition = FormStartPosition.CenterParent;
-            connectToDB.Show();
         }
 
         private void label2_DoubleClick(object sender, EventArgs e)
@@ -152,6 +129,7 @@ namespace FDB
             TransitionTo(Scene.frontPage);
         }
 
+        // Method to transition scenes (or rather tabs)
         private void TransitionTo(Scene newScene)
         {
             switch (newScene)
@@ -244,7 +222,7 @@ namespace FDB
             }
         }
 
-        // Function called when entering the MoviePage scene
+        // Method called when entering tbMoviePage
         private void tpMoviePage_Enter(object sender, EventArgs e)
         {
             string title = results.Rows[selectedResultIndex]["title"].ToString().Trim();
@@ -269,6 +247,7 @@ namespace FDB
             ShowGenres();
         }
 
+        // Method called when entering tbActorPage
         private void tpActorPage_Enter(object sender, EventArgs e)
         {
             string name = results.Rows[selectedResultIndex]["Actor"].ToString().Trim();
@@ -359,6 +338,28 @@ namespace FDB
                 // check and add empty actor image.
                 lvMovies.Items.Add(title, i);
             }
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.Password == String.Empty)
+            {
+                var result = MessageBox.Show("You haven't configured the database yet. Configure now?", "First time", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    ConnectToDB connectToDB = new ConnectToDB();
+                    connectToDB.StartPosition = FormStartPosition.CenterScreen;
+                    connectToDB.Show();
+                }
+
+            }
+        }
+
+        private void configureDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConnectToDB connectToDB = new ConnectToDB();
+            connectToDB.StartPosition = FormStartPosition.CenterScreen;
+            connectToDB.Show();
         }
     }
 }

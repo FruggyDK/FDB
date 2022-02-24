@@ -2,13 +2,24 @@
 using System;
 using System.Data;
 using System.Windows.Forms;
+using FDB.Properties;
 
 namespace FDB
 {
     internal static class Database
     {
         private static string connectionString =
-            "Server=localhost;Port=5432;Database=FDB;User Id=postgres;Password=Nta87pxm10;";
+            "Server="
+            + Settings.Default.Server
+            + ";Port="
+            + Settings.Default.Port
+            + ";Database="
+            + Settings.Default.Database
+            + ";User Id="
+            + Settings.Default.UserId
+            + ";Password="
+            + Settings.Default.Password
+            + ";";
 
         public enum Table
         {
@@ -19,7 +30,9 @@ namespace FDB
 
         private static readonly string[] tables = { "movie", "actor", "genre" };
 
+        //
         // Generel methods for communicating with database, which the methods builds upon
+        //
         private static DataTable GetEntitiesFromQuery(
             Table table,
             string rows,
@@ -120,6 +133,21 @@ namespace FDB
             return dt;
         }
 
+        public static bool TestConnection()
+        {
+            NpgsqlConnection connection = new NpgsqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static DataTable GetAllEntititesFromTable(Table table)
         {
             NpgsqlConnection connection = new NpgsqlConnection(connectionString);
@@ -185,7 +213,9 @@ namespace FDB
             return dt;
         }
 
+        //
         // Methods for communicating with movies table
+        //
         public static int InsertMovieToDatabase(
             string title,
             int year,
@@ -320,7 +350,9 @@ namespace FDB
             return true;
         }
 
+        //
         // Methods for communicating with actors table
+        //
         public static DataTable GetActorsFromQuery(string query)
         {
             return GetEntitiesFromQuery(
@@ -492,7 +524,9 @@ namespace FDB
             return true;
         }
 
+        //
         // Methods for communicating with genres table
+        //
         public static DataTable GetGenresFromQuery(string query)
         {
             return GetEntitiesFromQuery(Table.Genre, "gen_title", query);
@@ -580,7 +614,9 @@ namespace FDB
             return true;
         }
 
+        //
         // Methods for communicating with movie_cast table
+        //
         public static DataTable GetActorsFromMovie(int mov_id)
         {
             NpgsqlConnection connection = new NpgsqlConnection(connectionString);
@@ -748,7 +784,9 @@ namespace FDB
             return dt;
         }
 
+        //
         // Methods for communicating with movie_genres table
+        //
         public static bool AddGenreToMovie(int mov_id, int gen_id)
         {
             NpgsqlConnection connection = new NpgsqlConnection(connectionString);

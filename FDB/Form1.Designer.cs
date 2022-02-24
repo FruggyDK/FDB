@@ -30,8 +30,7 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.databaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addNewEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manageEntitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.movieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.genreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +48,7 @@
             this.lbLogo = new System.Windows.Forms.Label();
             this.txtSeach1 = new System.Windows.Forms.TextBox();
             this.tpMoviePage = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
             this.lvGenres = new System.Windows.Forms.ListView();
             this.cbSearchType2 = new System.Windows.Forms.ComboBox();
             this.btnSearch2 = new System.Windows.Forms.Button();
@@ -69,7 +69,12 @@
             this.lvMovies = new System.Windows.Forms.ListView();
             this.lblName = new System.Windows.Forms.Label();
             this.pbHeadshot = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.databaseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.manageEntitiesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moviesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.actorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.genresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SceneControl.SuspendLayout();
             this.tpFrontPage.SuspendLayout();
@@ -85,7 +90,7 @@
             // 
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.databaseToolStripMenuItem});
+            this.databaseToolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 415);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(740, 24);
@@ -95,28 +100,20 @@
             // databaseToolStripMenuItem
             // 
             this.databaseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectToolStripMenuItem,
-            this.addNewEntryToolStripMenuItem});
+            this.manageEntitiesToolStripMenuItem});
             this.databaseToolStripMenuItem.Name = "databaseToolStripMenuItem";
             this.databaseToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.databaseToolStripMenuItem.Text = "Database";
             // 
-            // connectToolStripMenuItem
+            // manageEntitiesToolStripMenuItem
             // 
-            this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.connectToolStripMenuItem.Text = "Connect to database";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
-            // 
-            // addNewEntryToolStripMenuItem
-            // 
-            this.addNewEntryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.manageEntitiesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.movieToolStripMenuItem,
             this.actorToolStripMenuItem,
             this.genreToolStripMenuItem});
-            this.addNewEntryToolStripMenuItem.Name = "addNewEntryToolStripMenuItem";
-            this.addNewEntryToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.addNewEntryToolStripMenuItem.Text = "Manage entities";
+            this.manageEntitiesToolStripMenuItem.Name = "manageEntitiesToolStripMenuItem";
+            this.manageEntitiesToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.manageEntitiesToolStripMenuItem.Text = "Manage entities";
             // 
             // movieToolStripMenuItem
             // 
@@ -308,6 +305,15 @@
             this.tpMoviePage.Text = "tpMoviePage";
             this.tpMoviePage.UseVisualStyleBackColor = true;
             this.tpMoviePage.Enter += new System.EventHandler(this.tpMoviePage_Enter);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(154, 188);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.TabIndex = 31;
+            this.label5.Text = "Genres";
             // 
             // lvGenres
             // 
@@ -522,28 +528,68 @@
             this.pbHeadshot.TabIndex = 31;
             this.pbHeadshot.TabStop = false;
             // 
-            // label5
+            // databaseToolStripMenuItem1
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(154, 188);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 13);
-            this.label5.TabIndex = 31;
-            this.label5.Text = "Genres";
+            this.databaseToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configureDatabaseToolStripMenuItem,
+            this.manageEntitiesToolStripMenuItem1});
+            this.databaseToolStripMenuItem1.Name = "databaseToolStripMenuItem1";
+            this.databaseToolStripMenuItem1.Size = new System.Drawing.Size(67, 20);
+            this.databaseToolStripMenuItem1.Text = "Database";
+            // 
+            // manageEntitiesToolStripMenuItem1
+            // 
+            this.manageEntitiesToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.moviesToolStripMenuItem,
+            this.actorsToolStripMenuItem,
+            this.genresToolStripMenuItem});
+            this.manageEntitiesToolStripMenuItem1.Name = "manageEntitiesToolStripMenuItem1";
+            this.manageEntitiesToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.manageEntitiesToolStripMenuItem1.Text = "Manage entities";
+            // 
+            // configureDatabaseToolStripMenuItem
+            // 
+            this.configureDatabaseToolStripMenuItem.Name = "configureDatabaseToolStripMenuItem";
+            this.configureDatabaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configureDatabaseToolStripMenuItem.Text = "Configure Database";
+            this.configureDatabaseToolStripMenuItem.Click += new System.EventHandler(this.configureDatabaseToolStripMenuItem_Click);
+            // 
+            // moviesToolStripMenuItem
+            // 
+            this.moviesToolStripMenuItem.Name = "moviesToolStripMenuItem";
+            this.moviesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.moviesToolStripMenuItem.Text = "Movies";
+            this.moviesToolStripMenuItem.Click += new System.EventHandler(this.movieToolStripMenuItem_Click);
+            // 
+            // actorsToolStripMenuItem
+            // 
+            this.actorsToolStripMenuItem.Name = "actorsToolStripMenuItem";
+            this.actorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.actorsToolStripMenuItem.Text = "Actors";
+            this.actorsToolStripMenuItem.Click += new System.EventHandler(this.actorToolStripMenuItem_Click);
+            // 
+            // genresToolStripMenuItem
+            // 
+            this.genresToolStripMenuItem.Name = "genresToolStripMenuItem";
+            this.genresToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.genresToolStripMenuItem.Text = "Genres";
+            this.genresToolStripMenuItem.Click += new System.EventHandler(this.genreToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(740, 439);
-            this.Controls.Add(this.SceneControl);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.SceneControl);
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FDB";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.SceneControl.ResumeLayout(false);
@@ -566,11 +612,10 @@
         #endregion
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem databaseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addNewEntryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem manageEntitiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem movieToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem actorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem genreToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
         private System.Windows.Forms.TabControl SceneControl;
         private System.Windows.Forms.TabPage tpFrontPage;
         private System.Windows.Forms.Button btnSearch;
@@ -606,6 +651,12 @@
         private System.Windows.Forms.Label lblDob;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolStripMenuItem databaseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem configureDatabaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem manageEntitiesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem moviesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem actorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem genresToolStripMenuItem;
     }
 }
 
