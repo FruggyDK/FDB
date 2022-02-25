@@ -203,11 +203,14 @@ namespace FDB
 
             moviesList = Database.GetAllEntititesFromTable(Database.Table.Movie);
             DataTable dt = moviesList.Copy();
-            dt.Columns.RemoveAt(0);
-
-            for (int i = 0; i < 4; i++)
+            if (dt.Columns.Count != 0)
             {
-                dt.Columns.RemoveAt(1);
+                dt.Columns.RemoveAt(0);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    dt.Columns.RemoveAt(1);
+                }
             }
 
             dataGridView1.DataSource = dt;

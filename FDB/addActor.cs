@@ -34,14 +34,11 @@ namespace FDB
             bool onlyLetters = (act_fname + act_lname).All(Char.IsLetter);
             if (onlyLetters && (act_fname != string.Empty && act_lname != string.Empty))
             {
-                bool result = Database.InsertActorToDatabase(
-                    act_fname,
-                    act_lname,
-                    img_path
-                );
+                bool result = Database.InsertActorToDatabase(act_fname, act_lname, img_path);
                 if (result)
                 {
                     UpdateDataGrid();
+                    ShowBtnAddActor();
                 }
             }
             else

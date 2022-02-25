@@ -45,7 +45,10 @@ namespace FDB
             genreList = Database.GetAllEntititesFromTable(Database.Table.Genre);
 
             DataTable dt = genreList.Copy();
-            dt.Columns.RemoveAt(0);
+            if (dt.Columns.Count != 0)
+            {
+                dt.Columns.RemoveAt(0);
+            }
             dataGridView1.DataSource = dt;
             dataGridView1.ClearSelection();
         }
