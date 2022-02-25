@@ -146,6 +146,7 @@ namespace FDB
             txtActFname.Clear();
             txtActLname.Clear();
             pbPreview.Image = null;
+            img_path = String.Empty;
             dataGridView1.ClearSelection();
             btnActorRemove.Hide();
             btnActorUpdate.Hide();
